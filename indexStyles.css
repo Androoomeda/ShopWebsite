@@ -40,6 +40,7 @@ header{
   background-color: var(--main-color);
   justify-content: space-between;
   box-shadow: 0 2px 5px rgb(0 0 0 / 0.2);
+  align-items: center;
   position: sticky;
   top: 0;
   z-index: 100;
@@ -91,60 +92,134 @@ input[type="search"]::-webkit-search-cancel-button {
   position: relative;
 }
 
+.order-container{
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 35px;
+}
+
+.counter{
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  background: #e53935;
+  color: #fff;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  overflow: hidden;
+  z-index: 1;
+}
+
 nav a img{
   width: 30px;
 }
 
 main{
-  flex-grow: 1;
+  flex-grow: 1 1 25%;
   padding: 30px;
-  max-width: 1200px;
+  max-width: 95%;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 15px;
 }
 
 .card{
-  background: var(--main-color);
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rbg(0 0 0 / 0.1);
-  overflow: hidden;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--main-color);
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.3);
 }
 
 .card img{
   width: 100%;
-  height: 260px;
+  aspect-ratio: 3/4;
   object-fit: cover;
+  border-radius: 5px;
 }
 
 .card-body{
   padding: 15px;
-  flex-grow: 1;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
+.card-title, .card-price, .add-to-cart-button{
+  width: 100%;
+  box-sizing: border-box;
+}
+
 .card-title{
-  font-size: 16px;
-  font-weight: 600;
   margin: 0 0 8px 0;
   color: #222;
 }
 
+.card-bottom{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
 .card-price{
-  font-size: 13px;
   font-weight: bold;
   color: #cf2331;
 }
 
 del{
   color: rgb(104, 104, 104);
-  font-size: 10px;
 }
+
+.card-bottom-right{
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.add-to-cart-button{
+  background-color: #9D403D;
+  color: whitesmoke;
+  font-size: 20px;
+  text-align: center;
+  border: none;
+  padding: 8px;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+.add-to-cart-button:hover{
+  transform: scale(1.05);
+  transition: 0.2s ease;
+  box-shadow: 0 0 20px #9D403D;
+}
+
+.card-bottom-right img{
+  margin-left: 10px;
+  width: 20%;
+  height: 20%;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.card-bottom img:hover{
+  transition: 0.2s ease;
+  transform:  scale(1.1);
+}
+
 
 footer{
   background: #222;
