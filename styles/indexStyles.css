@@ -22,16 +22,53 @@ body{
 
 a{
   text-decoration: none;
-  color: #333
-}
-
-.logo img{
-  width: 25%;
-  border-radius: 20px;
 }
 
 a:hover{
   text-decoration: underline;
+}
+
+.sidebar{
+  height: 40%;
+  width: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: var(--accent-color);
+  transition: 0.3s;
+  overflow-x: hidden;
+  padding-top: 20px;
+  border-bottom: 2px solid #504241;
+  border-right: 2px solid #504241;
+  box-sizing: border-box;
+}
+
+.sidebar a{
+  padding: 5px 15px;
+  font-size: 30px;
+  color: white;
+  display: block;
+  transition: 0.3s;
+}
+
+.openBtn{
+  font-size: 20px;
+  cursor: pointer;
+  padding: 10px 15px;
+  margin-right: 10px;
+  background: none;
+  border: none;
+  border-radius: 50%;
+}
+
+.openBtn img{
+  color: black;
+  width: 25px;
+  height:25;
+}
+
+.sidebar.open{
+  width: 250px;
 }
 
 header{
@@ -44,6 +81,23 @@ header{
   position: sticky;
   top: 0;
   z-index: 100;
+}
+
+.header-left {
+  display: flex;
+  align-items: center; 
+  gap: 20px;          
+}
+
+.header-left p{
+  font-size: 20px;
+  font-style: bold;
+}
+
+.logo img{
+  width: 140px;
+  height: 70px;
+  border-radius: 20px;
 }
 
 .header-right{
@@ -70,7 +124,6 @@ header{
   width: 180px;
 }
 
-/* Удаление крестика в строке поиска */
 input[type="search"]::-webkit-search-cancel-button {
   -webkit-appearance: none;
   appearance: none;
@@ -211,7 +264,7 @@ del{
   margin-left: 10px;
   width: 20%;
   height: 20%;
-  object-fit: cover;
+  object-fit: fill;
   cursor: pointer;
 }
 
@@ -231,7 +284,8 @@ footer{
 
 footer nav a{
   color: #ccc;
-  margin: 0 5px;
+  font-family: "Bruno Ace SC";
+  margin: 0 8px;
 }
 
 footer nav a:hover{

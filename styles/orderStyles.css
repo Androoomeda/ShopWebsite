@@ -1,0 +1,15 @@
+h1{
+  color: red;
+}
+body{
+  background-image: url('sources/profile.svg');
+}
+
+div{
+  display: block;
+  justify-content: center;
+  background-image: url('sources/profile.svg');
+  background-size: fill;
+  background-position: center;
+  background-repeat: no-repeat;
+}
