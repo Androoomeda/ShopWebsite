@@ -2,27 +2,38 @@
 <html lang="en">
 
 <head>
-  <link rel="stylesheet" href="indexStyles.css">
+  <link rel="stylesheet" href="styles/indexStyles.css">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MLOGE Exclusive shop</title>
 </head>
 
 <body>
-
   <header>
-    <a class="logo" href="index.html"><img src="sources/logo.jpg" alt=""></a>
+    <div class="header-left">
+      <button class="openBtn" id="openBtn"><img src="sources/menu.svg" alt=""></button>
+    <div id="sidebar" class="sidebar">
+      <a href="javascript:void(0)" id="closeBtn">&times;</a>
+      <a href="#">Худи</a>
+      <a href="#">Футболки</a>
+      <a href="#">Брюки</a>
+      <a href="#">Шорты</a>
+      <a href="#">Кроссовки</a>
+    </div>
+      <a class="logo" href="index.html"><img src="sources/logo.jpg" alt=""></a>
+      <p>Novosibirsk</p>
+    </div>
     <div class="header-right">
       <div class="search-box">
         <img class="search-icon" src="sources/search.svg" alt="">
         <input type="search" placeholder="Search" aria-label="Search">
       </div>
       <nav class="header-links">
-        <a href="/profile/profile.html"><img src="sources/profile.svg" alt=""></a>
-        <a href="/favorite/favorite.html"><img src="sources/favorite.svg" alt=""></a>
+        <a href="profile.html"><img src="sources/profile.svg" alt=""></a>
+        <a href="favorite.html"><img src="sources/favorite.svg" alt=""></a>
         <div class="order-container">
           <span id="counter" class="counter">0</span>
-          <a href="/order/order.html"><img src="sources/shopping-bag.svg" alt=""></a>
+          <a href="order.html"><img src="sources/shopping-bag.svg" alt=""></a>
         </div>
       </nav>
     </div>
@@ -110,7 +121,7 @@
     <article class="card">
       <img src="sources/catalog/catalog7.jpg" alt="">
       <div class="card-body">
-        <h2 class="card-title">Zalupa krosovki Tn</h2>
+        <h2 class="card-title">Salomon Tn</h2>
         <div class="card-bottom">
           <p class="card-price">99$ <del>119$</del></p>
           <div class="card-bottom-right">
@@ -141,6 +152,17 @@
     const globalCounter = document.getElementById('counter');
     const likeButtons = document.querySelectorAll('.likeButton');
     const orderButtons = document.querySelectorAll('.add-to-cart-button');
+    const sidebar = document.getElementById('sidebar');
+    const openBtn = document.getElementById('openBtn');
+    const closeBtn = document.getElementById('closeBtn');
+
+    openBtn.onclick = function () {
+      sidebar.classList.add('open');
+    }
+
+    closeBtn.onclick = function () {
+      sidebar.classList.remove('open');
+    }
 
     let totalLikes = 0;
     let totalCartItems = 0;
