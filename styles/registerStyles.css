@@ -13,6 +13,11 @@
   font-family: "Michroma", sans-serif;
 }
 
+html, body{
+  height: 100%;
+  margin: 0;
+}
+
 body{
   background: url('../sources/poster.jpg');
   background-size: fill;
@@ -29,6 +34,12 @@ a{
 
 a:hover{
   text-decoration: underline;
+}
+
+.wrapper{
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 header{
@@ -108,10 +119,10 @@ nav a img{
   width: 30px;
 }
 
-.wrapper{
-  backdrop-filter: blur(2px);
-  flex-grow: 1;
+main{
+  flex: 1;
   display: flex;
+  backdrop-filter: blur(3px);
   justify-content: center;
   align-items: center; 
   border: none;

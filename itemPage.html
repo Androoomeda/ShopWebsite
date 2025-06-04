@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link rel="stylesheet" href="styles/itemStyles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MLOGE Exclusive shop</title>
+</head>
+
+<body>
+  <div class="wrapper">
+    <header>
+      <div class="header-left">
+        <button class="openBtn" id="openBtn"><img src="sources/menu.svg" alt=""></button>
+        <div id="sidebar" class="sidebar">
+          <a href="javascript:void(0)" id="closeBtn">&times;</a>
+          <a href="#">Худи</a>
+          <a href="#">Футболки</a>
+          <a href="#">Брюки</a>
+          <a href="#">Шорты</a>
+          <a href="#">Кроссовки</a>
+        </div>
+        <a class="logo" href="index.html"><img src="sources/logo.jpg" alt=""></a>
+        <p>Novosibirsk</p>
+      </div>
+      <div class="header-right">
+        <div class="search-box">
+          <img class="search-icon" src="sources/search.svg" alt="">
+          <input type="search" placeholder="Search" aria-label="Search">
+        </div>
+        <nav class="header-links">
+          <a href="auth.html"><img src="sources/profile.svg" alt=""></a>
+          <div class="order-container">
+            <span id="counter" class="counter">0</span>
+            <a href="favorite.html"><img src="sources/favorite.svg" alt=""></a>
+          </div>
+          <div class="order-container">
+            <span id="counter" class="counter">0</span>
+            <a href="order.html"><img src="sources/shopping-bag.svg" alt=""></a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <div class="container">
+        <div class="left">
+          <div class="product-gallery">
+            <div class="main-photo" id="main-photo">
+              <img src="sources/catalog/catalog4.jpg" alt="New Balance 2002R">
+            </div>
+            <div class="thumbnails">
+              <img src="sources/catalog/catalog4.jpg" class="active" alt="thumb1">
+              <img src="sources/catalog/4.2.jpg" alt="thumb2">
+              <img src="sources/catalog/4.3.jpg" alt="thumb2">
+              <img src="sources/catalog/4.4.jpg" alt="thumb3">
+            </div>
+          </div>
+        </div>
+        <div class="right">
+          <div class="product-title">New Balance 2002R</div>
+          <p class="product-price">99$ <del class="product-discount">129$</del></p>
+          <div class="sizes">
+            <button class="size-btn selected">37</button>
+            <button class="size-btn">38</button>
+            <button class="size-btn">39</button>
+            <button class="size-btn">40</button>
+            <button class="size-btn">41</button>
+            <button class="size-btn">42</button>
+            <button class="size-btn">43</button>
+            <button class="size-btn">44</button>
+            <button class="size-btn">45</button>
+          </div>
+          <div class="actions">
+            <button class="add-to-cart-button">В корзину</button>
+            <img class="likeButton" src="sources/favorite.svg" alt="">
+          </div>
+          <div class="section-title">Characters</div>
+          <div class="product-params">
+            <b>Type:</b> Shoes<br>
+            <b>Color:</b> Brown gray<br>
+            <b>Артикул:</b> 12345678
+          </div>
+          <div class="section-title">Description</div>
+          <div class="product-description">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque euismod, urna eu tincidunt
+            consectetur,
+            nisi nisl aliquam eros, a facilisis enim sapien ac quam.
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <nav>
+        <a href="#about">About us</a>
+        <a href="#help">Help</a>
+        <a href="#contacts">Contacts</a>
+      </nav>
+      <nav>
+        <a href="#brand">Brand</a>
+        <a href="#">News</a>
+        <a href="#">Job</a>
+        <a href="#">MLOGE Club</a>
+      </nav>
+      <p>2024 MLOGE. Все права защищены.</p>
+    </footer>
+  </div>
+
+  <script>
+    const thumbnails = document.querySelectorAll('.thumbnails img');
+    const mainPhoto = document.querySelector('#main-photo img');
+    thumbnails.forEach(thumb => {
+      thumb.addEventListener('click', function () {
+        thumbnails.forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+        mainPhoto.src = this.src;
+      });
+    });
+
+    const sizeBtns = document.querySelectorAll('.size-btn');
+    sizeBtns.forEach(btn => {
+      btn.addEventListener('click', function () {
+        sizeBtns.forEach(b => b.classList.remove('selected'));
+        this.classList.add('selected');
+      });
+    });
+  </script>
+</body>
+
+</html>
