@@ -20,8 +20,10 @@
       <a href="#">Шорты</a>
       <a href="#">Кроссовки</a>
     </div>
+
       <a class="logo" href="index.html"><img src="sources/logo.jpg" alt=""></a>
       <p>Novosibirsk</p>
+
     </div>
     <div class="header-right">
       <div class="search-box">
@@ -31,14 +33,13 @@
       <nav class="header-links">
         <a href="auth.html"><img src="sources/profile.svg" alt=""></a>
          <div class="order-container">
-          <span id="counter" class="counter">0</span>
+          <span id="favorite-counter" class="counter">0</span>
           <a href="favorite.html"><img src="sources/favorite.svg" alt=""></a>
         </div>
         <div class="order-container">
-          <span id="counter" class="counter">0</span>
+          <span id="cart-counter" class="counter">0</span>
           <a href="order.html"><img src="sources/shopping-bag.svg" alt=""></a>
-        </div>
-        
+        </div> 
       </nav>
     </div>
   </header>
@@ -153,9 +154,11 @@
   </footer>
 
   <script>
-    const globalCounter = document.getElementById('counter');
+    const favoriteCounter = document.getElementById('favorite-counter');
+    const cartCounter = document.getElementById('cart-counter');
     const likeButtons = document.querySelectorAll('.likeButton');
     const orderButtons = document.querySelectorAll('.add-to-cart-button');
+    
     const sidebar = document.getElementById('sidebar');
     const openBtn = document.getElementById('openBtn');
     const closeBtn = document.getElementById('closeBtn');
@@ -180,20 +183,22 @@
         const liked = likedStates.get(button);
 
         if (!liked) {
+          totalLikes++;
           button.src = 'sources/addedfavorite.svg';
           likedStates.set(button, true);
         } else {
+          totalLikes--;
           button.src = 'sources/favorite.svg';
           likedStates.set(button, false);
         }
+        favoriteCounter.textContent = totalLikes;
       });
     });
 
     orderButtons.forEach(button => {
       button.addEventListener('click', () => {
         totalCartItems++;
-        globalCounter.textContent = totalCartItems;
-
+        cartCounter.textContent = totalCartItems;
       });
     });
   </script>
