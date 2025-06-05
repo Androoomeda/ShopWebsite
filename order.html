@@ -9,200 +9,110 @@
 </head>
 
 <body>
-  <header>
-    <div class="header-left">
-      <button class="openBtn" id="openBtn"><img src="sources/menu.svg" alt=""></button>
-      <div id="sidebar" class="sidebar">
-        <a href="javascript:void(0)" id="closeBtn">&times;</a>
-        <a href="#">Худи</a>
-        <a href="#">Футболки</a>
-        <a href="#">Брюки</a>
-        <a href="#">Шорты</a>
-        <a href="#">Кроссовки</a>
-      </div>
-      <a class="logo" href="index.html"><img src="sources/logo.jpg" alt=""></a>
-      <p>Novosibirsk</p>
-    </div>
-
-    <h1>ORDER</h1>
-
-    <div class="header-right">
-      <div class="search-box">
-        <img class="search-icon" src="sources/search.svg" alt="">
-        <input type="search" placeholder="Search" aria-label="Search">
-      </div>
-      <nav class="header-links">
-        <a href="auth.html"><img src="sources/profile.svg" alt=""></a>
-        <div class="order-container">
-          <span id="favorite-counter" class="counter">0</span>
-          <a href="favorite.html"><img src="sources/favorite.svg" alt=""></a>
+  <div class="wrapper">
+    <header>
+      <div class="header-left">
+        <button class="openBtn" id="openBtn"><img src="sources/menu.svg" alt=""></button>
+        <div id="sidebar" class="sidebar">
+          <a href="javascript:void(0)" id="closeBtn">&times;</a>
+          <a href="#">Худи</a>
+          <a href="#">Футболки</a>
+          <a href="#">Брюки</a>
+          <a href="#">Шорты</a>
+          <a href="#">Кроссовки</a>
         </div>
-        <div class="order-container">
-          <span id="cart-counter" class="counter">0</span>
-          <a href="order.html"><img src="sources/shopping-bag.svg" alt=""></a>
+        <a class="logo" href="index.html"><img src="sources/logo.jpg" alt=""></a>
+        <p>Novosibirsk</p>
+      </div>
+      <h1>ORDER</h1>
+      <div class="header-right">
+        <div class="search-box">
+          <img class="search-icon" src="sources/search.svg" alt="">
+          <input type="search" placeholder="Search" aria-label="Search">
         </div>
+        <nav class="header-links">
+          <a href="auth.html"><img src="sources/profile.svg" alt=""></a>
+          <div class="order-container">
+            <span id="counter" class="counter">0</span>
+            <a href="favorite.html"><img src="sources/favorite.svg" alt=""></a>
+          </div>
+          <div class="order-container">
+            <span id="counter" class="counter">0</span>
+            <a href="order.html"><img src="sources/shopping-bag.svg" alt=""></a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <div class="cart-container">
+        <div class="cart-items">
+          <div class="cart-item">
+            <div class="left">
+              <div class="cart-item-img">
+                <img src="sources/catalog/catalog4.jpg" alt="New Balance 2002R">
+              </div>
+              <div class="cart-item-actions">
+                <div class="cart-qty">
+                  <img src="sources/trash.svg" alt="">
+                  <button class="cart-qty-btn" title="Уменьшить количество">-</button>
+                  <span class="cart-qty-value">1</span>
+                  <button class="cart-qty-btn" title="Увеличить количество">+</button>
+                </div>
+              </div>
+            </div>
+            <div class="right">
+              <div class="cart-item-title">New Balance 2002R</div>
+              <div class="cart-item-details"><b>Color:</b> Brown gray</div>
+              <div class="cart-item-details"><b>Size:</b> 46 (RU)</div>
+              <div class="cart-item-price">99$ <del class="product-discount">129$</del></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cart-summary">
+          <div class="cart-summary-title">Summary</div>
+          <div class="cart-summary-row">
+            <span>Amount:</span>
+            <span>1</span>
+          </div>
+          <div class="cart-summary-row">
+            <span>Price without discount:</span>
+            <span><s>119$</s></span>
+          </div>
+          <div class="cart-summary-row cart-summary-discount">
+            <span>Discount:</span>
+            <span>20$</span>
+          </div>
+          <div class="cart-summary-row cart-summary-total">
+            <span>Total price:</span>
+            <span>99$</span>
+          </div>
+          <button class="cart-summary-btn">Checkout</button>
+          <button class="cart-summary-paypal">PayPal</button>
+          <div class="cart-summary-info">
+            By selecting one of the above payment options, you confirm that you have read, understand, and agree to
+            MLOGE's <b>Terms of Use, Terms of Sale and Return Policy, </b> and acknowledge <b> Privacy Policy.</b>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <nav>
+        <a href="#about">About us</a>
+        <a href="#help">Help</a>
+        <a href="#contacts">Contacts</a>
+      </nav>у
+      <nav>
+        <a href="#brand">Brand</a>
+        <a href="#">News</a>
+        <a href="#">Job</a>
+        <a href="#">MLOGE Club</a>
       </nav>
-    </div>
-  </header>
-
-  <main>
-    <article class="card">
-      <img src="sources/catalog/catalog1.jpg" alt="">
-      <div class="card-body">
-        <h2 class="card-title">Hoodie universe</h2>
-        <div class="card-bottom">
-          <p class="card-price">59$</p>
-          <div class="card-bottom-right">
-            <button class="add-to-cart-button">В корзину</button>
-            <img class="likeButton" src="sources/favorite.svg" alt="">
-          </div>
-        </div>
-      </div>
-    </article>
-    <article class="card">
-      <img src="sources/catalog/catalog2.jpg" alt="">
-      <div class="card-body">
-        <h2 class="card-title">T-shirt "Leave me alone"</h2>
-        <div class="card-bottom">
-          <p class="card-price">29$</p>
-          <div class="card-bottom-right">
-            <button class="add-to-cart-button">В корзину</button>
-            <img class="likeButton" src="sources/favorite.svg" alt="">
-          </div>
-        </div>
-      </div>
-    </article>
-    <article class="card">
-      <img src="sources/catalog/catalog3.jpg" alt="">
-      <div class="card-body">
-        <h2 class="card-title">Hoodie Ratte Souls</h2>
-        <div class="card-bottom">
-          <p class="card-price">69$</p>
-          <div class="card-bottom-right">
-            <button class="add-to-cart-button">В корзину</button>
-            <img class="likeButton" src="sources/favorite.svg" alt="">
-          </div>
-        </div>
-      </div>
-    </article>
-    <article class="card">
-      <img src="sources/catalog/catalog4.jpg" alt="">
-      <div class="card-body">
-        <h2 class="card-title">New balance 2002R</h2>
-        <div class="card-bottom">
-          <p class="card-price">99$</p>
-          <div class="card-bottom-right">
-            <button class="add-to-cart-button">В корзину</button>
-            <img class="likeButton" src="sources/favorite.svg" alt="">
-          </div>
-        </div>
-      </div>
-    </article>
-    <article class="card">
-      <img src="sources/catalog/catalog5.jpg" alt="">
-      <div class="card-body">
-        <h2 class="card-title">Gel-Kayano 14</h2>
-        <div class="card-bottom">
-          <p class="card-price">119$ <del>139$</del></p>
-          <div class="card-bottom-right">
-            <button class="add-to-cart-button">В корзину</button>
-            <img class="likeButton" src="sources/favorite.svg" alt="">
-          </div>
-        </div>
-      </div>
-    </article>
-    <article class="card">
-      <img src="sources/catalog/catalog6.jpg" alt="">
-      <div class="card-body">
-        <h2 class="card-title">Nike ACG</h2>
-        <div class="card-bottom">
-          <p class="card-price">129$</p>
-          <div class="card-bottom-right">
-            <button class="add-to-cart-button">В корзину</button>
-            <img class="likeButton" src="sources/favorite.svg" alt="">
-          </div>
-        </div>
-      </div>
-    </article>
-    <article class="card">
-      <img src="sources/catalog/catalog7.jpg" alt="">
-      <div class="card-body">
-        <h2 class="card-title">Salomon Tn</h2>
-        <div class="card-bottom">
-          <p class="card-price">99$ <del>119$</del></p>
-          <div class="card-bottom-right">
-            <button class="add-to-cart-button">В корзину</button>
-            <img class="likeButton" src="sources/favorite.svg" alt="">
-          </div>
-        </div>
-      </div>
-    </article>
-  </main>
-
-  <footer>
-    <nav>
-      <a href="#about">About us</a>
-      <a href="#help">Help</a>
-      <a href="#contacts">Contacts</a>
-    </nav>
-    <nav>
-      <a href="#brand">Brand</a>
-      <a href="#">News</a>
-      <a href="#">Job</a>
-      <a href="#">MLOGE Club</a>
-    </nav>
-    <p>2024 MLOGE. Все права защищены.</p>
-  </footer>
-
-  <script>
-    const favoriteCounter = document.getElementById('favorite-counter');
-    const cartCounter = document.getElementById('cart-counter');
-    const likeButtons = document.querySelectorAll('.likeButton');
-    const orderButtons = document.querySelectorAll('.add-to-cart-button');
-
-    const sidebar = document.getElementById('sidebar');
-    const openBtn = document.getElementById('openBtn');
-    const closeBtn = document.getElementById('closeBtn');
-
-    openBtn.onclick = function () {
-      sidebar.classList.add('open');
-    }
-
-    closeBtn.onclick = function () {
-      sidebar.classList.remove('open');
-    }
-
-    let totalLikes = 0;
-    let totalCartItems = 0;
-
-    const likedStates = new Map();
-
-    likeButtons.forEach(button => {
-      likedStates.set(button, false);
-
-      button.addEventListener('click', () => {
-        const liked = likedStates.get(button);
-
-        if (!liked) {
-          totalLikes++;
-          button.src = 'sources/addedfavorite.svg';
-          likedStates.set(button, true);
-        } else {
-          totalLikes--;
-          button.src = 'sources/favorite.svg';
-          likedStates.set(button, false);
-        }
-        favoriteCounter.textContent = totalLikes;
-      });
-    });
-
-    orderButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        totalCartItems++;
-        cartCounter.textContent = totalCartItems;
-      });
-    });
-  </script>
+      <p>2024 MLOGE. Все права защищены.</p>
+    </footer>
+  </div>
 </body>
 
 </html>
