@@ -45,8 +45,8 @@
       </div>
     </header>
 
-    <main>
-      <article class="card">
+    <main id="product-list">
+      <!-- <article class="card">
         <img src="sources/catalog/catalog1.jpg" alt="">
         <div class="card-body">
           <h2 class="card-title">Hoodie universe</h2>
@@ -136,7 +136,7 @@
             </div>
           </div>
         </div>
-      </article>
+      </article> -->
     </main>
 
     <footer>
@@ -151,8 +151,6 @@
         <a href="#">Job</a>
         <a href="#">MLOGE Club</a>
       </nav>
-      <button id="loadData">Загрузить данные</button>
-      <pre id="result"></pre>
       <p>2024 MLOGE. Все права защищены.</p>
     </footer>
   </div>
@@ -164,14 +162,12 @@
     const orderButtons = document.querySelectorAll('.add-to-cart-button');
 
     const sidebar = document.getElementById('sidebar');
-    const openBtn = document.getElementById('openBtn');
-    const closeBtn = document.getElementById('closeBtn');
 
-    openBtn.onclick = function () {
+    document.getElementById('openBtn').onclick = function () {
       sidebar.classList.add('open');
     }
 
-    closeBtn.onclick = function () {
+    document.getElementById('closeBtn').onclick = function () {
       sidebar.classList.remove('open');
     }
 
@@ -206,21 +202,99 @@
       });
     });
 
-    document.getElementById('loadData').addEventListener('click', () => {
-      fetch('http://localhost:5120/products', {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json'
-        }
-      })
-        .then(response => response.json())
-        .then(data => {
-          document.getElementById('result').textContent = JSON.stringify(data, null, 2);
-        })
-        .catch(error => {
-          document.getElementById('result').textContent = 'Ошибка: ' + error;
+    const productList = document.getElementById('product-list');
+
+    fetch('http://localhost:5120/products', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json'
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        data.forEach(product => {
+          const card = createCard(product);
+          productList.appendChild(card);
         });
-    });
+      })
+      .catch(error => {
+        console.error('Ошибка загрузки данных:', error);
+        
+        const errorMessage = document.createElement('p');
+        errorMessage.textContent = 'Ошибка: не удалось загрузить данные. Попробуйте позже.';
+        errorMessage.style.color = 'black';
+        errorMessage.style.fontSize = "30px";
+
+        productList.appendChild(errorMessage);
+      });
+
+    function createCard(product) {
+      const card = document.createElement('article');
+      card.className = 'card';
+
+      const img = document.createElement('img');
+      img.src = "http://localhost:5120" + product.image;
+      img.alt = product.name;
+
+      const cardBody = document.createElement('div');
+      cardBody.className = 'card-body';
+
+      const title = document.createElement('h2');
+      title.className = 'card-title';
+      title.textContent = product.name;
+
+      const cardBottom = document.createElement('div');
+      cardBottom.className = 'card-bottom';
+
+      const price = document.createElement('p');
+      price.className = 'card-price';
+      price.textContent = product.price + '$';
+
+      const cardBottomRight = document.createElement('div');
+      cardBottomRight.className = 'card-bottom-right';
+
+      const addToCartBtn = document.createElement('button');
+      addToCartBtn.className = 'add-to-cart-button';
+      addToCartBtn.textContent = 'В корзину';
+      addToCartBtn.addEventListener('click', () => {
+        totalCartItems++;
+        orderCounter.textContent = totalCartItems;
+      });
+
+      const likeImg = document.createElement('img');
+      likeImg.className = 'likeButton';
+      likeImg.id = 'likeButton';
+      likeImg.src = 'sources/favorite.svg';
+      likeImg.addEventListener('click', () => {
+        const liked = likedStates.get(button);
+
+        if (!liked) {
+          totalLikes++;
+          button.src = 'sources/addedfavorite.svg';
+          likedStates.set(button, true);
+        } else {
+          totalLikes--;
+          button.src = 'sources/favorite.svg';
+          likedStates.set(button, false);
+        }
+        likeCounter.textContent = totalLikes;
+      });
+
+
+      cardBottomRight.appendChild(addToCartBtn);
+      cardBottomRight.appendChild(likeImg);
+
+      cardBottom.appendChild(price);
+      cardBottom.appendChild(cardBottomRight);
+
+      cardBody.appendChild(title);
+      cardBody.appendChild(cardBottom);
+
+      card.appendChild(img);
+      card.appendChild(cardBody);
+
+      return card;
+    }
   </script>
 </body>
 
