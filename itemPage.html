@@ -32,11 +32,11 @@
         <nav class="header-links">
           <a href="auth.html"><img src="sources/profile.svg" alt=""></a>
           <div class="order-container">
-            <span id="counter" class="counter">0</span>
+            <span id="likeCounter" class="counter">0</span>
             <a href="favorite.html"><img src="sources/favorite.svg" alt=""></a>
           </div>
           <div class="order-container">
-            <span id="counter" class="counter">0</span>
+            <span id="orderCounter" class="counter">0</span>
             <a href="order.html"><img src="sources/shopping-bag.svg" alt=""></a>
           </div>
         </nav>
@@ -61,14 +61,11 @@
           <div id="sizes" class="sizes">
           </div>
           <div class="actions">
-            <button class="add-to-cart-button">В корзину</button>
-            <img class="likeButton" src="sources/favorite.svg" alt="">
+            <button id="cartButton" class="cartButton">В корзину</button>
+            <img id="likeButton" class="likeButton" src="sources/favorite.svg" alt="">
           </div>
           <div class="section-title">Characters</div>
-          <div id="product-params" class="product-params">
-            <b>Type:</b> <br>
-            <b>Color:</b> <br>
-          </div>
+          <div id="product-params" class="product-params"></div>
           <div class="section-title">Description</div>
           <div id="product-description" class="product-description">
           </div>
@@ -93,6 +90,46 @@
   </div>
 
   <script>
+    const likeCounter = document.getElementById('likeCounter');
+    const orderCounter = document.getElementById('orderCounter');
+    let totalLikes = 0;
+    let totalCartItems = 0;
+    let liked = false;
+
+
+    const cartButton = document.getElementById('cartButton');
+    cartButton.addEventListener('click', () => {
+      totalCartItems++;
+      orderCounter.textContent = totalCartItems;
+      cartButton.textContent = "В корзине";
+      cartButton.disabled = true;
+    });
+
+    const likeButton = document.getElementById('likeButton');
+    likeButton.addEventListener('click', () => {
+      if (liked === false) {
+        totalLikes++;
+        likeButton.src = 'sources/addedfavorite.svg';
+        liked = true;
+      } 
+      else {
+        totalLikes--;
+        likeButton.src = 'sources/favorite.svg';
+        liked = false;
+      }
+      likeCounter.textContent = totalLikes;
+    });
+
+    const sidebar = document.getElementById('sidebar');
+
+    document.getElementById('openBtn').onclick = function () {
+      sidebar.classList.add('open');
+    }
+
+    document.getElementById('closeBtn').onclick = function () {
+      sidebar.classList.remove('open');
+    }
+
     const params = new URLSearchParams(window.location.search);
     const productId = params.get('id');
 
