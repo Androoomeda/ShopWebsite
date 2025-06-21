@@ -46,6 +46,19 @@
     </header>
 
     <main id="product-list">
+      <article class="card">
+        <img src="sources/catalog/catalog1.jpg" alt="">
+        <div class="card-body">
+          <h2 class="card-title">Hoodie universe</h2>
+          <div class="card-bottom">
+            <p class="card-price">59$ <del>139$</del></p>
+            <div class="card-bottom-right">
+              <button class="add-to-cart-button">В корзину</button>
+              <img class="likeButton" src="sources/favorite.svg" alt="">
+            </div>
+          </div>
+        </div>
+      </article>
     </main>
 
     <footer>
@@ -157,7 +170,12 @@
 
       const price = document.createElement('p');
       price.className = 'card-price';
-      price.textContent = product.price + '$';
+      if (product.discountPrice) {
+        price.innerHTML = `${product.price}$ <del class="product-discount">${product.discountPrice}$</del>`;
+      }
+      else {
+        price.textContent = `${product.price}$`;
+      }
 
       const cardBottomRight = document.createElement('div');
       cardBottomRight.className = 'card-bottom-right';
