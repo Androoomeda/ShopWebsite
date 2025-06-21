@@ -21,7 +21,7 @@
           <a href="#">Шорты</a>
           <a href="#">Кроссовки</a>
         </div>
-        <a class="logo" href="index.html"><img src="sources/logo.jpg" alt=""></a>
+        <a class="logo" href="mainPage.html"><img src="sources/logo.jpg" alt=""></a>
         <p>Novosibirsk</p>
       </div>
       <div class="header-right">
@@ -48,21 +48,23 @@
         <div class="left">
           <div class="product-gallery">
             <div class="main-photo" id="main-photo">
-              <img src="sources/catalog/catalog4.jpg" alt="New Balance 2002R">
+              <img id="photo" src="" alt="">
             </div>
-            <div class="thumbnails">
-              <img src="sources/catalog/catalog4.jpg" class="active" alt="thumb1">
+            <div id="thumbnails" class="thumbnails">
+              <!-- <img src="sources/catalog/catalog4.jpg" class="active" alt="thumb1">
               <img src="sources/catalog/4.2.jpg" alt="thumb2">
               <img src="sources/catalog/4.3.jpg" alt="thumb2">
-              <img src="sources/catalog/4.4.jpg" alt="thumb3">
+              <img src="sources/catalog/4.4.jpg" alt="thumb3"> -->
             </div>
           </div>
         </div>
         <div class="right">
-          <div class="product-title">New Balance 2002R</div>
-          <p class="product-price">99$ <del class="product-discount">129$</del></p>
-          <div class="sizes">
-            <button class="size-btn selected">37</button>
+          <div id="product-title" class="product-title"></div>
+          <p id="product-price" class="product-price">
+            <!-- <del class="product-discount">129$</del> -->
+          </p>
+          <div id="sizes" class="sizes">
+            <!-- <button class="size-btn selected">37</button>
             <button class="size-btn">38</button>
             <button class="size-btn">39</button>
             <button class="size-btn">40</button>
@@ -70,23 +72,19 @@
             <button class="size-btn">42</button>
             <button class="size-btn">43</button>
             <button class="size-btn">44</button>
-            <button class="size-btn">45</button>
+            <button class="size-btn">45</button> -->
           </div>
           <div class="actions">
             <button class="add-to-cart-button">В корзину</button>
             <img class="likeButton" src="sources/favorite.svg" alt="">
           </div>
           <div class="section-title">Characters</div>
-          <div class="product-params">
-            <b>Type:</b> Shoes<br>
-            <b>Color:</b> Brown gray<br>
-            <b>Артикул:</b> 12345678
+          <div id="product-params" class="product-params">
+            <b>Type:</b> <br>
+            <b>Color:</b> <br>
           </div>
           <div class="section-title">Description</div>
-          <div class="product-description">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque euismod, urna eu tincidunt
-            consectetur,
-            nisi nisl aliquam eros, a facilisis enim sapien ac quam.
+          <div id="product-description" class="product-description">
           </div>
         </div>
       </div>
@@ -109,23 +107,87 @@
   </div>
 
   <script>
-    const thumbnails = document.querySelectorAll('.thumbnails img');
-    const mainPhoto = document.querySelector('#main-photo img');
-    thumbnails.forEach(thumb => {
-      thumb.addEventListener('click', function () {
-        thumbnails.forEach(t => t.classList.remove('active'));
-        this.classList.add('active');
-        mainPhoto.src = this.src;
-      });
-    });
+    const params = new URLSearchParams(window.location.search);
+    const productId = params.get('id');
 
-    const sizeBtns = document.querySelectorAll('.size-btn');
-    sizeBtns.forEach(btn => {
-      btn.addEventListener('click', function () {
-        sizeBtns.forEach(b => b.classList.remove('selected'));
-        this.classList.add('selected');
+    fetch(`http://localhost:5120/api/Products/${productId}`)
+      .then(response => response.json())
+      .then(data => initProductPage(data))
+      .catch(error => console.error('Ошибка загрузки данных:', error));
+
+
+    function initProductPage(data) {
+      const mainPhoto = document.getElementById('main-photo');
+      mainPhoto.innerHTML = `<img src="http://localhost:5120${data.imagesPath[0]}" alt="${data.name}">`;
+
+      const thumbnails = document.getElementById('thumbnails');
+      thumbnails.innerHTML = '';
+
+      data.imagesPath.forEach((imgSrc, index) => {
+        const img = document.createElement('img');
+        img.src = `http://localhost:5120${imgSrc}`;
+        img.alt = `thumb${index + 1}`;
+
+        if (index === 0) img.classList.add('active');
+
+        img.addEventListener('click', () => {
+          thumbnails.querySelectorAll('img').forEach(i => i.classList.remove('active'));
+          img.classList.add('active');
+          mainPhoto.querySelector('img').src = imgSrc;
+        });
+
+        thumbnails.appendChild(img);
       });
-    });
+
+      document.getElementById('product-title').textContent = data.name;
+
+      const priceElem = document.getElementById('product-price');
+      if (data.discountPrice && data.discountPrice < data.price) {
+        priceElem.innerHTML = `${data.price}$ <del class="product-discount">${data.discountPrice}$</del>`;
+      }
+      else {
+        priceElem.textContent = `${data.price}$`;
+      }
+
+
+      const sizesContainer = document.getElementById('sizes');
+      sizesContainer.innerHTML = '';
+
+      data.sizesLabel.forEach((size, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'size-btn';
+        if (index === 0) btn.classList.add('selected');
+        btn.textContent = size;
+        sizesContainer.appendChild(btn);
+      });
+
+      const paramsElem = document.getElementById('product-params');
+      paramsElem.innerHTML = `
+      <b>Type:</b> ${data.categoryName}<br>
+      <b>Color:</b> ${data.color}<br>
+      <b>Артикул:</b> ${data.id}`;
+
+      document.getElementById('product-description').textContent = data.description;
+
+
+      const thumbnailsImages = document.querySelectorAll('.thumbnails img');
+      const mainImage = document.querySelector('#main-photo img');
+      thumbnailsImages.forEach(thumb => {
+        thumb.addEventListener('click', function () {
+          thumbnailsImages.forEach(t => t.classList.remove('active'));
+          this.classList.add('active');
+          mainImage.src = this.src;
+        });
+      });
+
+      const sizeBtns = document.querySelectorAll('.size-btn');
+      sizeBtns.forEach(btn => {
+        btn.addEventListener('click', function () {
+          sizeBtns.forEach(b => b.classList.remove('selected'));
+          this.classList.add('selected');
+        });
+      });
+    }
   </script>
 </body>
 
