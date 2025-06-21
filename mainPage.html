@@ -113,7 +113,7 @@
 
     const productList = document.getElementById('product-list');
 
-    fetch('http://localhost:5120/products', {
+    fetch('http://localhost:5120/api/Products', {
       method: 'GET',
       headers: {
         'Accept': 'application/json'
@@ -142,7 +142,7 @@
       card.className = 'card';
 
       const img = document.createElement('img');
-      img.src = "http://localhost:5120" + product.image;
+      img.src = "http://localhost:5120" + product.imagePath;
       img.alt = product.name;
 
       const cardBody = document.createElement('div');
