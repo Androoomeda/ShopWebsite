@@ -15,11 +15,11 @@
         <button class="openBtn" id="openBtn"><img src="sources/menu.svg" alt=""></button>
         <div id="sidebar" class="sidebar">
           <a href="javascript:void(0)" id="closeBtn">&times;</a>
-          <a href="#">Худи</a>
-          <a href="#">Футболки</a>
-          <a href="#">Брюки</a>
-          <a href="#">Шорты</a>
-          <a href="#">Кроссовки</a>
+          <a href="#" onclick="onCategoryClick('Hoodie')">Худи</a>
+          <a href="#" onclick="onCategoryClick('T-shirts')">Футболки</a>
+          <a href="#" onclick="onCategoryClick('Trousers')">Брюки</a>
+          <a href="#" onclick="onCategoryClick('Shorts')">Шорты</a>
+          <a href="#" onclick="onCategoryClick('Sneakers')">Кроссовки</a>
         </div>
 
         <a class="logo" href="mainPage.html"><img src="sources/logo.jpg" alt=""></a>
@@ -97,14 +97,10 @@
 
     const productList = document.getElementById('product-list');
 
-    fetch('http://localhost:5120/api/Products', {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json'
-      }
-    })
+    fetch('http://localhost:5120/api/Products')
       .then(response => response.json())
       .then(data => {
+        productList.innerHTML = '';
         data.forEach(product => {
           const card = createCard(product);
           productList.appendChild(card);
@@ -198,6 +194,34 @@
       card.appendChild(cardBody);
 
       return card;
+    }
+
+    function onCategoryClick(categoryName) {
+      window.history.pushState({}, '', `/mainPage.html/${categoryName.toLowerCase()}`);
+
+      fetchCategoryProducts(categoryName);
+    }
+
+    function fetchCategoryProducts(categoryName) {
+      fetch(`http://localhost:5120/api/Categories/${categoryName}`)
+        .then(response => response.json())
+        .then(data => {
+          productList.innerHTML = '';
+          data.forEach(product => {
+            const card = createCard(product);
+            productList.appendChild(card);
+          });
+        })
+        .catch(error => {
+          console.error('Ошибка загрузки данных:', error);
+
+          const errorMessage = document.createElement('p');
+          errorMessage.textContent = 'Ошибка: не удалось загрузить данные. Попробуйте позже.';
+          errorMessage.style.color = 'black';
+          errorMessage.style.fontSize = "30px";
+
+          productList.appendChild(errorMessage);
+        });
     }
   </script>
 </body>
