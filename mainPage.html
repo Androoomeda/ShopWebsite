@@ -15,11 +15,11 @@
         <button class="openBtn" id="openBtn"><img src="sources/menu.svg" alt=""></button>
         <div id="sidebar" class="sidebar">
           <a href="javascript:void(0)" id="closeBtn">&times;</a>
-          <a href="#" onclick="onCategoryClick('Hoodie')">Худи</a>
-          <a href="#" onclick="onCategoryClick('T-shirts')">Футболки</a>
-          <a href="#" onclick="onCategoryClick('Trousers')">Брюки</a>
-          <a href="#" onclick="onCategoryClick('Shorts')">Шорты</a>
-          <a href="#" onclick="onCategoryClick('Sneakers')">Кроссовки</a>
+          <a href="#" data-category="Hoodie">Худи</a>
+          <a href="#" data-category="T-shirts">Футболки</a>
+          <a href="#" data-category="Trousers">Брюки</a>
+          <a href="#" data-category="Shorts">Шорты</a>
+          <a href="#" data-category="Sneakers">Кроссовки</a>
         </div>
 
         <a class="logo" href="mainPage.html"><img src="sources/logo.jpg" alt=""></a>
@@ -77,153 +77,7 @@
     </footer>
   </div>
 
-  <script>
-    const likeCounter = document.getElementById('likeCounter');
-    const orderCounter = document.getElementById('orderCounter');
-
-    let totalLikes = 0;
-    let totalCartItems = 0;
-    const likedStates = new Map();
-
-    const sidebar = document.getElementById('sidebar');
-
-    document.getElementById('openBtn').onclick = function () {
-      sidebar.classList.add('open');
-    }
-
-    document.getElementById('closeBtn').onclick = function () {
-      sidebar.classList.remove('open');
-    }
-
-    const productList = document.getElementById('product-list');
-
-    fetch('http://localhost:5120/api/Products')
-      .then(response => response.json())
-      .then(data => {
-        productList.innerHTML = '';
-        data.forEach(product => {
-          const card = createCard(product);
-          productList.appendChild(card);
-        });
-      })
-      .catch(error => {
-        console.error('Ошибка загрузки данных:', error);
-
-        const errorMessage = document.createElement('p');
-        errorMessage.textContent = 'Ошибка: не удалось загрузить данные. Попробуйте позже.';
-        errorMessage.style.color = 'black';
-        errorMessage.style.fontSize = "30px";
-
-        productList.appendChild(errorMessage);
-      });
-
-    function createCard(product) {
-      const card = document.createElement('article');
-      card.className = 'card';
-
-      const ref = document.createElement('a');
-      ref.href = `itemPage.html?id=${product.id}`;
-
-      const img = document.createElement('img');
-      img.src = "http://localhost:5120" + product.imagePath;
-      img.alt = product.name;
-
-      const cardBody = document.createElement('div');
-      cardBody.className = 'card-body';
-
-      const title = document.createElement('h2');
-      title.className = 'card-title';
-      title.textContent = product.name;
-
-      const cardBottom = document.createElement('div');
-      cardBottom.className = 'card-bottom';
-
-      const price = document.createElement('p');
-      price.className = 'card-price';
-      if (product.discountPrice) {
-        price.innerHTML = `${product.price}$ <del class="product-discount">${product.discountPrice}$</del>`;
-      }
-      else {
-        price.textContent = `${product.price}$`;
-      }
-
-      const cardBottomRight = document.createElement('div');
-      cardBottomRight.className = 'card-bottom-right';
-
-      const addToCartBtn = document.createElement('button');
-      addToCartBtn.className = 'add-to-cart-button';
-      addToCartBtn.textContent = 'В корзину';
-      addToCartBtn.addEventListener('click', () => {
-        totalCartItems++;
-        orderCounter.textContent = totalCartItems;
-      });
-
-      const likeImg = document.createElement('img');
-      likeImg.className = 'likeButton';
-      likeImg.id = 'likeButton';
-      likeImg.src = 'sources/favorite.svg';
-      likedStates.set(likeImg, false);
-
-      likeImg.addEventListener('click', () => {
-        const liked = likedStates.get(likeImg);
-
-        if (!liked) {
-          totalLikes++;
-          likeImg.src = 'sources/addedfavorite.svg';
-          likedStates.set(likeImg, true);
-        } else {
-          totalLikes--;
-          likeImg.src = 'sources/favorite.svg';
-          likedStates.set(likeImg, false);
-        }
-        likeCounter.textContent = totalLikes;
-      });
-
-      cardBottomRight.appendChild(addToCartBtn);
-      cardBottomRight.appendChild(likeImg);
-
-      cardBottom.appendChild(price);
-      cardBottom.appendChild(cardBottomRight);
-
-      cardBody.appendChild(title);
-      cardBody.appendChild(cardBottom);
-
-      ref.appendChild(img);
-
-      card.appendChild(ref);
-      card.appendChild(cardBody);
-
-      return card;
-    }
-
-    function onCategoryClick(categoryName) {
-      window.history.pushState({}, '', `/mainPage.html/${categoryName.toLowerCase()}`);
-
-      fetchCategoryProducts(categoryName);
-    }
-
-    function fetchCategoryProducts(categoryName) {
-      fetch(`http://localhost:5120/api/Categories/${categoryName}`)
-        .then(response => response.json())
-        .then(data => {
-          productList.innerHTML = '';
-          data.forEach(product => {
-            const card = createCard(product);
-            productList.appendChild(card);
-          });
-        })
-        .catch(error => {
-          console.error('Ошибка загрузки данных:', error);
-
-          const errorMessage = document.createElement('p');
-          errorMessage.textContent = 'Ошибка: не удалось загрузить данные. Попробуйте позже.';
-          errorMessage.style.color = 'black';
-          errorMessage.style.fontSize = "30px";
-
-          productList.appendChild(errorMessage);
-        });
-    }
-  </script>
+  <script type="module" src="js/mainPage.js"></script>
 </body>
 
 </html>
