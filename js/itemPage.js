@@ -6,6 +6,7 @@ const orderCounter = document.getElementById('orderCounter');
 
 let totalLikes = 0;
 let totalCartItems = 0;
+let isLiked = false;
 
 const sidebar = document.getElementById('sidebar');
 
@@ -27,16 +28,10 @@ cartButton.addEventListener('click', () => {
 
 const likeButton = document.getElementById('likeButton');
 likeButton.addEventListener('click', () => {
-  if (liked === false) {
-    totalLikes++;
-    likeButton.src = 'sources/addedfavorite.svg';
-    liked = true;
-  }
-  else {
-    totalLikes--;
-    likeButton.src = 'sources/favorite.svg';
-    liked = false;
-  }
+  isLiked = !isLiked;
+  likeButton.src = isLiked ? 'sources/addedfavorite.svg' : 'sources/favorite.svg';
+  totalLikes = isLiked ? totalLikes + 1 : totalLikes - 1;
+
   likeCounter.textContent = totalLikes;
 });
 
@@ -52,7 +47,6 @@ try {
 
 
 function initProductPage(data) {
-  console.log(data);
   const mainPhoto = document.getElementById('main-photo');
   mainPhoto.innerHTML = `<img src="http://localhost:5120${data.imagesPath[0]}" alt="${data.name}">`;
 
