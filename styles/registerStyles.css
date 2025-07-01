@@ -1,122 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Bruno+Ace+SC&family=Michroma&display=swap');
-
-:root{
-  --main-color: #f1d5bd;
-  --accent-color: #8d6865;
-  --secondary-color: ;
-}
-
-*{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Michroma", sans-serif;
-}
-
-html, body{
-  height: 100%;
-  margin: 0;
-}
-
 body{
   background: url('../sources/poster.jpg');
   background-size: fill;
   background-size: cover;
   background-repeat: no-repeat;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-a{
-  text-decoration: none;
-}
-
-a:hover{
-  text-decoration: underline;
 }
 
 .wrapper{
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-header{
-  width: 100%;
-  padding: 15px 60px;
-  display: flex;
-  background-color: var(--main-color);
-  justify-content: space-between;
-  box-shadow: 0 2px 5px rgb(0 0 0 / 0.2);
-  align-items: center;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-
-.header-left {
-  display: flex;
-  align-items: center; 
-  gap: 20px;          
-}
-
-.header-left p{
-  font-size: 20px;
-  font-style: bold;
-}
-
-.logo img{
-  width: 140px;
-  height: 70px;
-  border-radius: 20px;
-}
-
-.header-right{
-  display: flex;
-  align-items: center;
-  gap: 20px; 
-}
-
-.header-links{
-  display: flex;
-  flex-direction: row;
-}
-
-.header-links a{
-  padding: 0 40px 0 0;
-  color: #555;
-  position: relative;
-}
-
-.order-container{
-  position: relative;
-  display: inline-block;
-  width: 40px;
-  height: 35px;
-}
-
-.counter{
-  position: absolute;
-  bottom: 2px;
-  right: 2px;
-  background: #e53935;
-  color: #fff;
-  border-radius: 50%;
-  width: 18px;
-  height: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  font-family: Arial, Helvetica, sans-serif;
-  font-weight: bold;
-  overflow: hidden;
-  z-index: 1;
-}
-
-nav a img{
-  width: 30px;
 }
 
 main{
@@ -132,7 +22,7 @@ form{
   width: 420px;
   background-color: var(--accent-color);
   opacity: 0.9;
-  border: 2px solid rgba(0, 0, 0, 0.623);
+  border: 2px solid rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(20px);
   box-shadow: 0 5px 5px rgb(0 0 0 / 0.4);
   border-radius: 20px;
@@ -148,7 +38,7 @@ form{
 .wrapper .inputBox{
   width: 100%;
   height: 50px;
-  margin: 20px 0;
+  margin: 10px 0;
 }
 
 .inputBox input{
@@ -169,14 +59,52 @@ form{
 }
 
 .inputBox i{
-  position: absolute;
+  position: relative;
   right: 2;
   top: 50%;
   transform: translateY(-50%);
   font-size: 20px;
 }
 
+.toggle-password {
+  position: absolute;
+  right: 50px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  color: #aaa;
+  padding: 0;
+}
+
+.password-conditions {
+  color: #b8b8b8;
+  font-size: 14px;
+  margin-left: 15px;
+  margin-bottom: 20px;
+}
+
+.password-conditions label {
+  cursor: default;
+}
+
+.password-conditions input[type="checkbox"] {
+  margin-right: 5px;
+  pointer-events: none;
+  width: 16px;
+  height: 16px;
+}
+
+.equal-checkbox{
+  color: #b8b8b8;
+  font-size: 14px;
+  margin-left: 15px;
+  margin-top: 20px;
+}
+
 .accept{
+  margin-top: 40px;
   margin-left: 15px;
   margin-bottom: 20px;
   cursor: pointer;
@@ -187,8 +115,8 @@ form{
   margin-right: 5px;
 }
 
-input[type="checkbox"] {
-  accent-color: #000000; /* Замените на нужный цвет */
+.accept [type="checkbox"] {
+  accent-color: #000000; 
 }
 
 .wrapper .btn{
@@ -209,31 +137,4 @@ input[type="checkbox"] {
   transform: scale(1.05);
   transition: 0.3s ease;
   box-shadow: 0 0 20px #3f3131;
-}
-
-footer{
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  background: #222;
-  color: #ccc;
-  padding: 20px 30px;
-  text-align: center;
-  font-size: 14px;
-}
-
-footer nav a{
-  color: #ccc;
-  font-family: "Bruno Ace SC";
-  margin: 0 8px;
-}
-
-footer nav a:hover{
-  color: #fff;
-}
-
-footer p{
-  padding-top: 10px;
-  color: #5f5f5f
 }
