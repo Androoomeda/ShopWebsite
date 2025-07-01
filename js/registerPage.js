@@ -6,60 +6,95 @@ document.querySelectorAll('.toggle-password').forEach(button => {
 
     if (input.type === 'password') {
       input.type = 'text';
-      button.textContent = '🙈';
+      button.src = 'sources/eye.svg';
     } else {
       input.type = 'password';
-      button.textContent = '👁️';
+      button.src = 'sources/eye-closed.svg';
     }
   });
 });
 
+const loginInput = document.getElementById('login');
+const emailInput = document.getElementById('email');
+const emailError = document.getElementById('emailError');
 const passwordInput = document.getElementById('password');
 const repeatePasswordInput = document.getElementById('repeatPassword');
+
 const uppercaseCheckbox = document.getElementById('uppercase');
 const numberCheckbox = document.getElementById('number');
 const specialCheckbox = document.getElementById('special');
 const lengthCheckbox = document.getElementById('length');
-const passwordsCheckbox = document.getElementById('passwordsEqual');
-const submitBtn = document.getElementById('submitBtn');
+const equalCheckbox = document.getElementById('equal');
+const acceptCheckbox = document.getElementById('accept');
 
-const passwordValue = passwordInput.value;
-const repeatValue = repeatePasswordInput.value;
+const registerBtn = document.getElementById('registerBtn');
+
+let passwordValue;
+let repeatValue;
+let emailValue;
+
+loginInput.addEventListener('input', updateSubmitButton);
+
+emailInput.addEventListener('input', () => {
+  emailValue = emailInput.value.trim();
+
+  if (emailValue === '') 
+    emailError.style.display = 'none'; 
+  else if (!validateEmail(emailValue)) 
+    emailError.style.display = 'block'; 
+  else 
+    emailError.style.display = 'none';
+  
+  updateSubmitButton();
+});
 
 passwordInput.addEventListener('input', () => {
-  const hasUppercase = /[A-ZА-ЯЁ]/.test(passwordValue);
-  uppercaseCheckbox.checked = hasUppercase;
+  passwordValue = passwordInput.value
 
-  const hasNumber = /\d/.test(passwordValue);
-  numberCheckbox.checked = hasNumber;
-
-  const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(passwordValue);
-  specialCheckbox.checked = hasSpecial;
-
-  const hasLength = passwordValue.length > 6;
-  lengthCheckbox.checked = hasLength;
-
+  validatePassword(passwordValue);
   checkPasswords();
   updateSubmitButton();
 });
 
-repeatePasswordInput.addEventListener('input', checkPasswords);
+repeatePasswordInput.addEventListener('input', () => {
+  repeatValue = repeatePasswordInput.value;
+  checkPasswords();
+  updateSubmitButton();
+});
 
-function checkPasswords(){
-  if(passwordValue === repeatValue && (passwordValue && repeatValue)){
-    passwordsCheckbox.checked = true;
-  }
-  else{
-    passwordsCheckbox.checked = false;
+function validateEmail(email) {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(email);
+}
+
+function validatePassword(password) {
+  uppercaseCheckbox.checked = /[A-ZА-ЯЁ]/.test(password);
+  numberCheckbox.checked = /\d/.test(password);
+  specialCheckbox.checked = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+  lengthCheckbox.checked = password.length > 6;
+}
+
+function checkPasswords() {
+  if (passwordValue && repeatValue && (passwordValue === repeatValue)) {
+    equalCheckbox.checked = true;
+  } else {
+    equalCheckbox.checked = false;
   }
 }
 
 function updateSubmitButton() {
-  const allValid = uppercaseCheckbox.checked &&
-                   numberCheckbox.checked &&
-                   specialCheckbox.checked &&
-                   lengthCheckbox.checked &&
-                   passwordsCheckbox.checked;
+  const allChecked =
+    uppercaseCheckbox.checked &&
+    numberCheckbox.checked &&
+    specialCheckbox.checked &&
+    lengthCheckbox.checked &&
+    equalCheckbox.checked &&
+    acceptCheckbox.checked;
 
-  submitBtn.disabled = !allValid;
+  const allValid = validateEmail(emailValue) &&
+    allChecked &&
+    loginInput.value.trim() !== '' &&
+    emailInput.value.trim() !== '';
+
+  registerBtn.disabled = !allValid;
 }
