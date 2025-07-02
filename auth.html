@@ -3,6 +3,7 @@
 
 <head>
   <link rel="stylesheet" href="styles/common.css">
+  <link rel="stylesheet" href="styles/authAndRegisterStyles.css">
   <link rel="stylesheet" href="styles/authStyles.css">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,15 +35,18 @@
       <form action="">
         <h1>Authorization</h1>
         <div class="inputBox">
-          <input type="username" placeholder="Login" required>
+          <input id="email" type="text" placeholder="Email" required>
         </div>
+        <div id="emailError" class="error-message"><i>Incorrect username</i></div>
         <div class="inputBox">
-          <input type="password" placeholder="Password" required>
+          <input id="password" type="password" placeholder="Password" required>
+          <img id="togglePassword" class="toggle-password" src="sources/eye-closed.svg" alt="eye">
         </div>
+        <div id="passwordError" class="error-message"><i>Incorrect password</i></div>
         <div class="rememberForgot">
           <a href="#">Forgot password?</a>
         </div>
-        <button type="submit" class="btn">Login</button>
+        <button id="authButton" type="submit" class="submitBtn" disabled>Login</button>
 
         <div class="registerLink">
           <p>Dont have an account? <a href="register.html">Register</a></p>
@@ -65,6 +69,7 @@
       <p>2024 MLOGE. Все права защищены.</p>
     </footer>
   </div>
-  </body>
+  <script type="module" src="js/authorizationPage.js"></script>
+</body>
 
 </html>

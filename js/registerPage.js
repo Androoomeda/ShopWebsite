@@ -37,17 +37,17 @@ let passwordValue;
 let repeatValue;
 let emailValue;
 
-usernameInput.addEventListener('input', updateRegisterButton);
+emailInput.addEventListener('input', updateRegisterButton);
 
 emailInput.addEventListener('input', () => {
   emailValue = emailInput.value.trim();
 
   if (emailValue === '')
-    emailError.style.display = 'none';
+    passwordError.style.display = 'none';
   else if (!validateEmail(emailValue))
-    emailError.style.display = 'block';
+    passwordError.style.display = 'block';
   else
-    emailError.style.display = 'none';
+    passwordError.style.display = 'none';
 
   updateRegisterButton();
 });
@@ -71,13 +71,13 @@ acceptCheckbox.addEventListener("click", updateRegisterButton);
 registerBtn.addEventListener('click', async (event) => {
   event.preventDefault();
 
+  passwordError.style.display = 'none';
+  passwordError.textContent = '';
   emailError.style.display = 'none';
   emailError.textContent = '';
-  usernameError.style.display = 'none';
-  usernameError.textContent = '';
 
   const data = {
-    username: usernameInput.value.trim(),
+    username: emailInput.value.trim(),
     email: emailInput.value.trim(),
     password: passwordInput.value.trim()
   }
@@ -98,12 +98,12 @@ registerBtn.addEventListener('click', async (event) => {
       const error = await response.json();
 
       if (error.field === 'username') {
-        usernameError.textContent = error.message;
-        usernameError.style.display = 'block';
-      }
-      else if (error.field === 'email') {
         emailError.textContent = error.message;
         emailError.style.display = 'block';
+      }
+      else if (error.field === 'email') {
+        passwordError.textContent = error.message;
+        passwordError.style.display = 'block';
       } else {
         alert('Ошибка регистрации: ' + (error.message || response.statusText));
       }
@@ -144,7 +144,7 @@ function updateRegisterButton() {
 
   const allValid = validateEmail(emailValue) &&
     allChecked &&
-    usernameInput.value.trim() !== '' &&
+    emailInput.value.trim() !== '' &&
     emailInput.value.trim() !== '';
 
   registerBtn.disabled = !allValid;
