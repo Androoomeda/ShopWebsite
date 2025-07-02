@@ -14,9 +14,12 @@ document.querySelectorAll('.toggle-password').forEach(button => {
   });
 });
 
-const loginInput = document.getElementById('login');
+const usernameInput = document.getElementById('username');
+const usernameError = document.getElementById('usernameError');
+
 const emailInput = document.getElementById('email');
 const emailError = document.getElementById('emailError');
+
 const passwordInput = document.getElementById('password');
 const repeatePasswordInput = document.getElementById('repeatPassword');
 
@@ -29,11 +32,12 @@ const acceptCheckbox = document.getElementById('accept');
 
 const registerBtn = document.getElementById('registerBtn');
 
+
 let passwordValue;
 let repeatValue;
 let emailValue;
 
-loginInput.addEventListener('input', updateRegisterButton);
+usernameInput.addEventListener('input', updateRegisterButton);
 
 emailInput.addEventListener('input', () => {
   emailValue = emailInput.value.trim();
@@ -66,27 +70,43 @@ acceptCheckbox.addEventListener("click", updateRegisterButton);
 
 registerBtn.addEventListener('click', async (event) => {
   event.preventDefault();
+
+  emailError.style.display = 'none';
+  emailError.textContent = '';
+  usernameError.style.display = 'none';
+  usernameError.textContent = '';
+
   const data = {
-    username: loginInput.value.trim(),
+    username: usernameInput.value.trim(),
     email: emailInput.value.trim(),
     password: passwordInput.value.trim()
   }
 
   try {
-    const response = await fetch('http://localhost:5120/api/ShopUser/register',{
+    const response = await fetch('http://localhost:5120/api/ShopUser/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(data)
-      
     });
-    if(response.ok){
+    if (response.ok) {
+      window.location.href = 'auth.html';
       alert('Регистрация прошла успешно!');
     }
-    else{
-      const errorData = await response.json();
-      alert('Ошибка регистрации: ' + (errorData.message || response.statusText));
+    else {
+      const error = await response.json();
+
+      if (error.field === 'username') {
+        usernameError.textContent = error.message;
+        usernameError.style.display = 'block';
+      }
+      else if (error.field === 'email') {
+        emailError.textContent = error.message;
+        emailError.style.display = 'block';
+      } else {
+        alert('Ошибка регистрации: ' + (error.message || response.statusText));
+      }
     }
   } catch (error) {
     alert('Ошибка при отправке запроса: ' + error.message);
@@ -124,7 +144,7 @@ function updateRegisterButton() {
 
   const allValid = validateEmail(emailValue) &&
     allChecked &&
-    loginInput.value.trim() !== '' &&
+    usernameInput.value.trim() !== '' &&
     emailInput.value.trim() !== '';
 
   registerBtn.disabled = !allValid;
