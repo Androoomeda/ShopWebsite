@@ -33,19 +33,19 @@ let passwordValue;
 let repeatValue;
 let emailValue;
 
-loginInput.addEventListener('input', updateSubmitButton);
+loginInput.addEventListener('input', updateRegisterButton);
 
 emailInput.addEventListener('input', () => {
   emailValue = emailInput.value.trim();
 
-  if (emailValue === '') 
-    emailError.style.display = 'none'; 
-  else if (!validateEmail(emailValue)) 
-    emailError.style.display = 'block'; 
-  else 
+  if (emailValue === '')
     emailError.style.display = 'none';
-  
-  updateSubmitButton();
+  else if (!validateEmail(emailValue))
+    emailError.style.display = 'block';
+  else
+    emailError.style.display = 'none';
+
+  updateRegisterButton();
 });
 
 passwordInput.addEventListener('input', () => {
@@ -53,13 +53,44 @@ passwordInput.addEventListener('input', () => {
 
   validatePassword(passwordValue);
   checkPasswords();
-  updateSubmitButton();
+  updateRegisterButton();
 });
 
 repeatePasswordInput.addEventListener('input', () => {
   repeatValue = repeatePasswordInput.value;
   checkPasswords();
-  updateSubmitButton();
+  updateRegisterButton();
+});
+
+acceptCheckbox.addEventListener("click", updateRegisterButton);
+
+registerBtn.addEventListener('click', async (event) => {
+  event.preventDefault();
+  const data = {
+    username: loginInput.value.trim(),
+    email: emailInput.value.trim(),
+    password: passwordInput.value.trim()
+  }
+
+  try {
+    const response = await fetch('http://localhost:5120/api/ShopUser/register',{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+      
+    });
+    if(response.ok){
+      alert('Регистрация прошла успешно!');
+    }
+    else{
+      const errorData = await response.json();
+      alert('Ошибка регистрации: ' + (errorData.message || response.statusText));
+    }
+  } catch (error) {
+    alert('Ошибка при отправке запроса: ' + error.message);
+  }
 });
 
 function validateEmail(email) {
@@ -82,7 +113,7 @@ function checkPasswords() {
   }
 }
 
-function updateSubmitButton() {
+function updateRegisterButton() {
   const allChecked =
     uppercaseCheckbox.checked &&
     numberCheckbox.checked &&
