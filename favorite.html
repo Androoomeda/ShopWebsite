@@ -15,13 +15,15 @@
       <div class="header-left">
         <button class="openBtn" id="openBtn"><img src="sources/menu.svg" alt=""></button>
         <div id="sidebar" class="sidebar">
-          <a href="javascript:void(0)" id="closeBtn">&times;</a>
-          <a href="#">Худи</a>
-          <a href="#">Футболки</a>
-          <a href="#">Брюки</a>
-          <a href="#">Шорты</a>
-          <a href="#">Кроссовки</a>
+          <a class="close-sidebar" href="javascript:void(0)" id="closeBtn">Close</a>
+          <a href="#" data-category="Hoodie">Hoodie</a>
+          <a href="#" data-category="Zip-up hoodie">Zip-up hoodie</a>
+          <a href="#" data-category="T-shirts">T-shirts</a>
+          <a href="#" data-category="Joggers">Trousers</a>
+          <a href="#" data-category="Shorts">Shorts</a>
+          <a href="#" data-category="Sneakers">Sneakers</a>
         </div>
+
         <a class="logo" href="mainPage.html"><img src="sources/logo.jpg" alt=""></a>
         <p>Novosibirsk</p>
       </div>
@@ -36,18 +38,18 @@
         <nav class="header-links">
           <a href="auth.html"><img src="sources/profile.svg" alt=""></a>
           <div class="order-container">
-            <span id="favorite-counter" class="counter">0</span>
+            <span id="likeCounter" class="counter">0</span>
             <a href="favorite.html"><img src="sources/favorite.svg" alt=""></a>
           </div>
           <div class="order-container">
-            <span id="cart-counter" class="counter">0</span>
+            <span id="orderCounter" class="counter">0</span>
             <a href="order.html"><img src="sources/shopping-bag.svg" alt=""></a>
           </div>
         </nav>
       </div>
     </header>
-    <main>
-      <article class="card">
+    <main id="product-list">
+      <!-- <article class="card">
         <img src="sources/catalog/catalog1.jpg" alt="">
         <div class="card-body">
           <h2 class="card-title">Hoodie universe</h2>
@@ -59,85 +61,7 @@
             </div>
           </div>
         </div>
-      </article>
-      <article class="card">
-        <img src="sources/catalog/catalog2.jpg" alt="">
-        <div class="card-body">
-          <h2 class="card-title">T-shirt "Leave me alone"</h2>
-          <div class="card-bottom">
-            <p class="card-price">29$</p>
-            <div class="card-bottom-right">
-              <button class="add-to-cart-button">В корзину</button>
-              <img class="removeButton" src="sources/trash.svg" alt="">
-            </div>
-          </div>
-        </div>
-      </article>
-      <article class="card">
-        <img src="sources/catalog/catalog3.jpg" alt="">
-        <div class="card-body">
-          <h2 class="card-title">Hoodie Ratte Souls</h2>
-          <div class="card-bottom">
-            <p class="card-price">69$</p>
-            <div class="card-bottom-right">
-              <button class="add-to-cart-button">В корзину</button>
-              <img class="removeButton" src="sources/trash.svg" alt="">
-            </div>
-          </div>
-        </div>
-      </article>
-      <article class="card">
-        <img src="sources/catalog/catalog4.jpg" alt="">
-        <div class="card-body">
-          <h2 class="card-title">New balance 2002R</h2>
-          <div class="card-bottom">
-            <p class="card-price">99$</p>
-            <div class="card-bottom-right">
-              <button class="add-to-cart-button">В корзину</button>
-              <img class="removeButton" src="sources/trash.svg" alt="">
-            </div>
-          </div>
-        </div>
-      </article>
-      <article class="card">
-        <img src="sources/catalog/catalog5.jpg" alt="">
-        <div class="card-body">
-          <h2 class="card-title">Gel-Kayano 14</h2>
-          <div class="card-bottom">
-            <p class="card-price">119$ <del>139$</del></p>
-            <div class="card-bottom-right">
-              <button class="add-to-cart-button">В корзину</button>
-              <img class="likeButton" src="sources/trash.svg" alt="">
-            </div>
-          </div>
-        </div>
-      </article>
-      <article class="card">
-        <img src="sources/catalog/catalog6.jpg" alt="">
-        <div class="card-body">
-          <h2 class="card-title">Nike ACG</h2>
-          <div class="card-bottom">
-            <p class="card-price">129$</p>
-            <div class="card-bottom-right">
-              <button class="add-to-cart-button">В корзину</button>
-              <img class="removeButton" src="sources/trash.svg" alt="">
-            </div>
-          </div>
-        </div>
-      </article>
-      <article class="card">
-        <img src="sources/catalog/catalog7.jpg" alt="">
-        <div class="card-body">
-          <h2 class="card-title">Salomon Tn</h2>
-          <div class="card-bottom">
-            <p class="card-price">99$ <del>119$</del></p>
-            <div class="card-bottom-right">
-              <button class="add-to-cart-button">В корзину</button>
-              <img class="removeButton" src="sources/trash.svg" alt="">
-            </div>
-          </div>
-        </div>
-      </article>
+      </article> -->
     </main>
 
     <footer>
@@ -155,44 +79,7 @@
       <p>2024 MLOGE. Все права защищены.</p>
     </footer>
   </div>
-  <script>
-    const favoriteCounter = document.getElementById('favorite-counter');
-    const cartCounter = document.getElementById('cart-counter');
-    const removeFavoriteButtons = document.querySelectorAll('.removeButton');
-    const orderButtons = document.querySelectorAll('.add-to-cart-button');
-
-    const sidebar = document.getElementById('sidebar');
-    const openBtn = document.getElementById('openBtn');
-    const closeBtn = document.getElementById('closeBtn');
-
-    openBtn.onclick = function () {
-      sidebar.classList.add('open');
-    }
-
-    closeBtn.onclick = function () {
-      sidebar.classList.remove('open');
-    }
-
-    let totalLikes = 5;
-    favoriteCounter.textContent = totalLikes;
-    let totalCartItems = 0;
-
-    removeFavoriteButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        if (totalLikes > 0)
-          totalLikes--;
-
-        favoriteCounter.textContent = totalLikes;
-      });
-    });
-
-    orderButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        totalCartItems++;
-        cartCounter.textContent = totalCartItems;
-      });
-    });
-  </script>
+  <script type="module" src="js/favoritePage.js"></script>
 </body>
 
 </html>

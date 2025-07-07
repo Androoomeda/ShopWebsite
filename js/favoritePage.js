@@ -34,8 +34,8 @@ loadProducts();
 
 async function loadProducts() {
   try {
-    const [products, favorites] = await Promise.all([api.getProducts(), api.getFavoriteIds()]);
-    renderProducts(products, favorites);
+    const data = await api.getFavoriteProducts()
+    renderProducts(data);
   } catch (error) {
     logger.handleError(error, productList);
   }
@@ -43,29 +43,30 @@ async function loadProducts() {
 
 async function onCategoryClick(categoryName) {
   try {
-    const [products, favorites] = 
-      await Promise.all([api.getCategoryProducts(categoryName), api.getFavoriteIds()]);
-      
-    renderProducts(products, favorites);
+    const [products, favorites] = await Promise.all([api.getCategoryProducts(categoryName), api.getFavoriteProducts()]);
+    const favoriteIds = new Set(favorites.map(fav => fav.id));
+    const favoriteProducts = products.filter(product => favoriteIds.has(product.id));
+
+    totalLikes = favoriteIds.size;
+    likeCounter.textContent = totalLikes;
+
+    renderProducts(favoriteProducts);
   } catch (error) {
     logger.handleError(error, productList);
   }
 }
 
-function renderProducts(products, favorites) {
+function renderProducts(products) {
   productList.innerHTML = '';
-  const favoriteIds = new Set(favorites.map(fav => fav.productId));
-  totalLikes = favoriteIds.size;
+
+  totalLikes = products.length;
   likeCounter.textContent = totalLikes;
 
   products.forEach(product => {
-    const isLiked = favoriteIds.has(product.id);
-    console.log(isLiked);
-    const card = createCard(product, onAddToCart, onLikeToggle, isLiked);
+    const card = createCard(product, onAddToCart, onLikeToggle, true);
     productList.appendChild(card);
   });
 }
-
 
 function onAddToCart() {
   totalCartItems++;
@@ -73,14 +74,15 @@ function onAddToCart() {
 }
 
 async function onLikeToggle(isLiked, productId) {
-  try {
-    if (isLiked) {
+  try
+  {
+    if(isLiked){
       await api.addToFavorite(productId)
-      totalLikes++;
+      totalLikes = totalLikes + 1;
     }
     else {
       await api.RemoveFavorite(productId)
-      totalLikes--;
+      totalLikes = totalLikes - 1;
     }
 
     likeCounter.textContent = totalLikes;

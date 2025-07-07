@@ -1,4 +1,4 @@
-export function createCard(product, onAddToCart, onLikeToggle) {
+export function createCard(product, onAddToCart, onLikeToggle, isLiked = false) {
   const card = document.createElement('article');
   card.className = 'card';
 
@@ -36,16 +36,16 @@ export function createCard(product, onAddToCart, onLikeToggle) {
   addToCartBtn.textContent = 'В корзину';
   addToCartBtn.addEventListener('click', onAddToCart);
 
+  let liked = isLiked;
+
   const likeImg = document.createElement('img');
   likeImg.className = 'likeButton';
-  likeImg.src = 'sources/favorite.svg';
-
-  let liked = false;
+  likeImg.src = liked ? 'sources/addedfavorite.svg' : 'sources/favorite.svg';
 
   likeImg.addEventListener('click', () => {
     liked = !liked;
     likeImg.src = liked ? 'sources/addedfavorite.svg' : 'sources/favorite.svg';
-    onLikeToggle(liked);
+    onLikeToggle(liked, product.id);
   });
 
   cardBottomRight.appendChild(addToCartBtn);

@@ -1,55 +1,13 @@
-.sidebar{
-  height: 40%;
-  width: 0;
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: var(--accent-color);
-  transition: 0.3s;
-  overflow-x: hidden;
-  padding-top: 20px;
-  border-bottom: 2px solid #504241;
-  border-right: 2px solid #504241;
-  box-sizing: border-box;
-}
-
-.sidebar a{
-  padding: 5px 15px;
-  font-size: 30px;
-  color: white;
-  display: block;
-  transition: 0.3s;
-}
-
-.openBtn{
-  font-size: 20px;
-  cursor: pointer;
-  padding: 10px 15px;
-  margin-right: 10px;
-  background: none;
-  border: none;
-  border-radius: 50%;
-}
-
-.openBtn img{
-  color: black;
-  width: 25px;
-  height:25;
-}
-
-.sidebar.open{
-  width: 250px;
-}
-
 main{
   flex: 1 1 auto;
-  flex-grow: 1 1 25%;
   padding: 30px;
   max-width: 95%;
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
   gap: 15px;
+  align-items: stretch;
+  grid-auto-rows: min-content;
 }
 
 .card{
@@ -83,6 +41,8 @@ main{
 }
 
 .card-title{
+  overflow-wrap: break-word;
+  word-wrap: break-word;
   margin: 0 0 8px 0;
   color: #222;
 }
@@ -92,18 +52,6 @@ main{
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-}
-
-
-.card-price{
-  font-weight: bold;
-  font-size: 22px;
-  color: #ff4081;
-}
-
-del{
-  font-size: 16px;
-  color: rgb(104, 104, 104);
 }
 
 .card-bottom-right{

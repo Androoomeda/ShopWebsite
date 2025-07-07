@@ -1,3 +1,5 @@
+import * as logger from './logger.js';
+
 const emailInput = document.getElementById('email');
 const emailError = document.getElementById('emailError');
 
@@ -44,9 +46,7 @@ authBtn.addEventListener('click', async (event) => {
     });
 
     if (response.ok) {
-      const result = await response.json();
-      localStorage.setItem('jwtToken', result.token);
-      alert('Вы вошли в аккаунт, держите печенье!');
+      window.location.href = 'mainPage.html';
     }
     else {
       const error = await response.json();
@@ -59,11 +59,12 @@ authBtn.addEventListener('click', async (event) => {
         passwordError.textContent = error.message;
         passwordError.style.display = 'block';
       } else {
-        alert('Ошибка регистрации: ' + (error.message || response.statusText));
+        logger.consoleLog('Ошибка входа: ' + (error.message || response.statusText));
+        alert('Ошибка входа: ' + (error.message || response.statusText));
       }
     }
   } catch (error) {
-    alert('Ошибка при отправке запроса: ' + error.message);
+    logger.consoleLog('Ошибка при отправке запроса: ' + (error.message || response.statusText));
   }
 });
 

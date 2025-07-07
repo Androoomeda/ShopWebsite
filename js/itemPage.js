@@ -39,7 +39,7 @@ const params = new URLSearchParams(window.location.search);
 const productId = params.get('id');
 
 try {
-  const data = await api.fetchCategoryById(productId)
+  const data = await api.getProductById(productId)
   initProductPage(data)
 } catch (error) {
   logger.consoleLog(error);

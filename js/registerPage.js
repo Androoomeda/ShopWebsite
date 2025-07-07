@@ -1,3 +1,5 @@
+import * as logger from './logger.js';
+
 document.querySelectorAll('.toggle-password').forEach(button => {
   button.addEventListener('click', () => {
     const inputId = button.getAttribute('data-target');
@@ -92,7 +94,7 @@ registerBtn.addEventListener('click', async (event) => {
     });
     if (response.ok) {
       window.location.href = 'auth.html';
-      alert('Регистрация прошла успешно!');
+      logger.consoleLog('Регистрация прошла успешно');
     }
     else {
       const error = await response.json();
@@ -105,11 +107,12 @@ registerBtn.addEventListener('click', async (event) => {
         passwordError.textContent = error.message;
         passwordError.style.display = 'block';
       } else {
+        logger.consoleLog('Ошибка регистрации: ' + (error.message || response.statusText));
         alert('Ошибка регистрации: ' + (error.message || response.statusText));
       }
     }
   } catch (error) {
-    alert('Ошибка при отправке запроса: ' + error.message);
+    logger.consoleLog('Ошибка при отправке запроса: ' + (error.message || response.statusText));
   }
 });
 

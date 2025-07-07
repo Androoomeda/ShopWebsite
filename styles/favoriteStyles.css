@@ -93,16 +93,6 @@ main{
   align-items: center;
 }
 
-
-.card-price{
-  font-weight: bold;
-  color: #cf2331;
-}
-
-del{
-  color: rgb(104, 104, 104);
-}
-
 .card-bottom-right{
   display: flex;
   align-items: center;
