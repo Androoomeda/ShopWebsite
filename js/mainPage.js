@@ -34,7 +34,7 @@ loadProducts();
 
 async function loadProducts() {
   try {
-    const [products, favorites] = await Promise.all([api.getProducts(), api.getFavoriteIds()]);
+    const [products, favorites] = await Promise.all([api.getProducts(), safeGetFavoriteIds()]);
     renderProducts(products, favorites);
   } catch (error) {
     logger.handleError(error, productList);
@@ -44,11 +44,19 @@ async function loadProducts() {
 async function onCategoryClick(categoryName) {
   try {
     const [products, favorites] = 
-      await Promise.all([api.getCategoryProducts(categoryName), api.getFavoriteIds()]);
+      await Promise.all([api.getCategoryProducts(categoryName), safeGetFavoriteIds()]);
       
     renderProducts(products, favorites);
   } catch (error) {
     logger.handleError(error, productList);
+  }
+}
+
+async function safeGetFavoriteIds() {
+  try {
+    return await api.getFavoriteIds();
+  } catch (error) {
+    return [];
   }
 }
 
@@ -79,7 +87,7 @@ async function onLikeToggle(isLiked, productId) {
       totalLikes++;
     }
     else {
-      await api.RemoveFavorite(productId)
+      await api.removeFavorite(productId)
       totalLikes--;
     }
 
