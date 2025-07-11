@@ -68,7 +68,6 @@ function renderProducts(products, favorites) {
 
   products.forEach(product => {
     const isLiked = favoriteIds.has(product.id);
-    console.log(isLiked);
     const card = createCard(product, onAddToCart, onLikeToggle, isLiked);
     productList.appendChild(card);
   });

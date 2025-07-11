@@ -79,16 +79,21 @@ export async function removeFavorite(productId) {
   return handleApiResponse(response);
 }
 
-async function handleApiResponse(response){
-  if(response.status === 401){
-    window.location.href = 'auth.html';
+async function handleApiResponse(response) {
+  if (response.status === 401) {
+    window.location.hre = 'auth.html';
     return Promise.reject(new Error('Unauthorized'));
   }
 
-  if(!response.ok){
+  if (!response.ok) {
     const errorText = await response.text();
     throw new Error(`Ошибка: ${response.status} ${errorText}`);
   }
 
-  return response.json;
+  const contentType = response.headers.get('Content-Type');
+  if (contentType && contentType.includes('application/json')) {
+    return response.json();
+  } else {
+    return null;
+  }
 }

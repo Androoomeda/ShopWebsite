@@ -47,9 +47,6 @@ async function onCategoryClick(categoryName) {
     const favoriteIds = new Set(favorites.map(fav => fav.id));
     const favoriteProducts = products.filter(product => favoriteIds.has(product.id));
 
-    totalLikes = favoriteIds.size;
-    likeCounter.textContent = totalLikes;
-
     renderProducts(favoriteProducts);
   } catch (error) {
     logger.handleError(error, productList);
@@ -74,15 +71,14 @@ function onAddToCart() {
 }
 
 async function onLikeToggle(isLiked, productId) {
-  try
-  {
-    if(isLiked){
+  try {
+    if (isLiked) {
       await api.addToFavorite(productId)
-      totalLikes = totalLikes + 1;
+      totalLikes++;
     }
     else {
-      await api.RemoveFavorite(productId)
-      totalLikes = totalLikes - 1;
+      await api.removeFavorite(productId)
+      totalLikes--;
     }
 
     likeCounter.textContent = totalLikes;
