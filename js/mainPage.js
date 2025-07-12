@@ -68,25 +68,19 @@ function renderProducts(products, favorites) {
 
   products.forEach(product => {
     const isLiked = favoriteIds.has(product.id);
-    const card = createCard(product, onAddToCart, onLikeToggle, isLiked);
+    const card = createCard(product, onLikeToggle, isLiked);
     productList.appendChild(card);
   });
-}
-
-
-function onAddToCart() {
-  totalCartItems++;
-  orderCounter.textContent = totalCartItems;
 }
 
 async function onLikeToggle(isLiked, productId) {
   try {
     if (isLiked) {
-      await api.addToFavorite(productId)
+      await api.addToFavorite(productId);
       totalLikes++;
     }
     else {
-      await api.removeFavorite(productId)
+      await api.removeFavorite(productId);
       totalLikes--;
     }
 

@@ -79,6 +79,49 @@ export async function removeFavorite(productId) {
   return handleApiResponse(response);
 }
 
+export async function getCartItems(){
+  const response = await fetch(`http://localhost:5120/api/cartitem`,
+  {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  });
+
+  return handleApiResponse(response);
+}
+
+export async function addToCart(productId, sizeId){
+  const data = {
+    productId: productId,
+    sizeId: sizeId
+  };
+
+  const response = await fetch(`http://localhost:5120/api/cartitem/addtocart`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include',
+    body: JSON.stringify(data)
+  });
+
+  return handleApiResponse(response);
+}
+
+export async function removeCartItem(productId){
+   const response = await fetch(`http://localhost:5120/api/cartitem/${productId}`,
+    {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include'
+    });
+
+  return handleApiResponse(response);
+}
+
 async function handleApiResponse(response) {
   if (response.status === 401) {
     window.location.hre = 'auth.html';

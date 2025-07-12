@@ -1,4 +1,4 @@
-export function createCard(product, onAddToCart, onLikeToggle, isLiked = false) {
+export function createCard(product, onLikeToggle, isLiked = false) {
   const card = document.createElement('article');
   card.className = 'card';
 
@@ -21,8 +21,9 @@ export function createCard(product, onAddToCart, onLikeToggle, isLiked = false) 
 
   const price = document.createElement('p');
   price.className = 'card-price';
+  
   if (product.discountPrice) {
-    price.innerHTML = `${product.price}$ <del class="product-discount">${product.discountPrice}$</del>`;
+    price.innerHTML = `${product.discountPrice}$ <del class="product-discount">${product.price}$</del>`;
   }
   else {
     price.textContent = `${product.price}$`;
@@ -30,11 +31,6 @@ export function createCard(product, onAddToCart, onLikeToggle, isLiked = false) 
 
   const cardBottomRight = document.createElement('div');
   cardBottomRight.className = 'card-bottom-right';
-
-  const addToCartBtn = document.createElement('button');
-  addToCartBtn.className = 'add-to-cart-button';
-  addToCartBtn.textContent = 'В корзину';
-  addToCartBtn.addEventListener('click', onAddToCart);
 
   let liked = isLiked;
 
@@ -48,7 +44,6 @@ export function createCard(product, onAddToCart, onLikeToggle, isLiked = false) 
     onLikeToggle(liked, product.id);
   });
 
-  cardBottomRight.appendChild(addToCartBtn);
   cardBottomRight.appendChild(likeImg);
 
   cardBottom.appendChild(price);
