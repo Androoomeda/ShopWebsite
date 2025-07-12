@@ -109,6 +109,21 @@ export async function addToCart(productId, sizeId){
   return handleApiResponse(response);
 }
 
+export async function editCartItem(productId, quantity){
+  const data = { quantity: quantity };
+
+  const response = await fetch(`http://localhost:5120/api/cartitem/${productId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include',
+    body: JSON.stringify(data)
+  });
+
+  return handleApiResponse(response);
+}
+
 export async function removeCartItem(productId){
    const response = await fetch(`http://localhost:5120/api/cartitem/${productId}`,
     {
