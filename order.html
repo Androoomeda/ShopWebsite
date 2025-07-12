@@ -31,14 +31,14 @@
           <img class="search-icon" src="sources/search.svg" alt="">
           <input type="search" placeholder="Search" aria-label="Search">
         </div>
-        <nav class="header-links">
+         <nav class="header-links">
           <a href="auth.html"><img src="sources/profile.svg" alt=""></a>
           <div class="order-container">
-            <span id="counter" class="counter">0</span>
+            <span id="likeCounter" class="counter">0</span>
             <a href="favorite.html"><img src="sources/favorite.svg" alt=""></a>
           </div>
           <div class="order-container">
-            <span id="counter" class="counter">0</span>
+            <span id="orderCounter" class="counter">0</span>
             <a href="order.html"><img src="sources/shopping-bag.svg" alt=""></a>
           </div>
         </nav>
@@ -46,48 +46,48 @@
     </header>
 
     <main>
-      <div class="cart-container">
-        <div class="cart-items">
-          <div class="cart-item">
-            <div class="left">
-              <div class="cart-item-img">
-                <img src="sources/catalog/catalog4.jpg" alt="New Balance 2002R">
-              </div>
-              <div class="cart-item-actions">
-                <div class="cart-qty">
-                  <img src="sources/trash.svg" alt="">
-                  <button class="cart-qty-btn" title="Уменьшить количество">-</button>
-                  <span class="cart-qty-value">1</span>
-                  <button class="cart-qty-btn" title="Увеличить количество">+</button>
+        <div class="cart-container">
+          <div id="cart-items" class="cart-items">
+            <!-- <div class="cart-item">
+              <div class="left">
+                <div class="cart-item-img">
+                  <img src="sources/eye-closed.svg" alt="New Balance 2002R">
+                </div>
+                <div class="cart-item-actions">
+                  <div class="cart-qty">
+                    <img src="sources/trash.svg" alt="">
+                    <button class="cart-qty-btn" title="Уменьшить количество">-</button>
+                    <span class="cart-qty-value">1</span>
+                    <button class="cart-qty-btn" title="Увеличить количество">+</button>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="right">
-              <div class="cart-item-title">New Balance 2002R</div>
-              <div class="cart-item-details"><b>Color:</b> Brown gray</div>
-              <div class="cart-item-details"><b>Size:</b> 46 (RU)</div>
-              <div class="cart-item-price">99$ <del class="product-discount">129$</del></div>
-            </div>
+              <div class="right">
+                <div class="cart-item-title">New Balance 2002R</div>
+                <div class="cart-item-details"><b>Color:</b> Brown gray</div>
+                <div class="cart-item-details"><b>Size:</b> 46 (RU)</div>
+                <div class="cart-item-price">99$ <del class="product-discount">129$</del></div>
+              </div>
+            </div> -->
           </div>
-        </div>
-
+          
         <div class="cart-summary">
           <div class="cart-summary-title">Summary</div>
           <div class="cart-summary-row">
             <span>Amount:</span>
-            <span>1</span>
+            <span id="items-amount"></span>
           </div>
           <div class="cart-summary-row">
             <span>Price without discount:</span>
-            <span><s>119$</s></span>
+            <span><s id="total-original-price">119$</s></span>
           </div>
           <div class="cart-summary-row cart-summary-discount">
             <span>Discount:</span>
-            <span>20$</span>
+            <span id="total-discount">20$</span>
           </div>
           <div class="cart-summary-row cart-summary-total">
             <span>Total price:</span>
-            <span>99$</span>
+            <span id="total-price">99$</span>
           </div>
           <button class="cart-summary-btn">Checkout</button>
           <button class="cart-summary-paypal">PayPal</button>
@@ -114,6 +114,7 @@
       <p>2024 MLOGE. Все права защищены.</p>
     </footer>
   </div>
+  <script type="module" src="js/orderPage.js"></script>
 </body>
 
 </html>

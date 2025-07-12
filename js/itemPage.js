@@ -1,5 +1,5 @@
 import * as api from './api.js'
-import * as logger from './api.js'
+import * as logger from './logger.js'
 
 const likeCounter = document.getElementById('likeCounter');
 const orderCounter = document.getElementById('orderCounter');
@@ -7,36 +7,30 @@ const orderCounter = document.getElementById('orderCounter');
 let totalLikes = 0;
 let totalCartItems = 0;
 let isLiked = false;
-
-const sidebar = document.getElementById('sidebar');
-
-document.getElementById('openBtn').onclick = function () {
-  sidebar.classList.add('open');
-}
-
-document.getElementById('closeBtn').onclick = function () {
-  sidebar.classList.remove('open');
-}
-
-const cartButton = document.getElementById('cartButton');
-cartButton.addEventListener('click', () => {
-  totalCartItems++;
-  orderCounter.textContent = totalCartItems;
-  cartButton.textContent = "В корзине";
-  cartButton.disabled = true;
-});
-
-const likeButton = document.getElementById('likeButton');
-likeButton.addEventListener('click', () => {
-  isLiked = !isLiked;
-  likeButton.src = isLiked ? 'sources/addedfavorite.svg' : 'sources/favorite.svg';
-  totalLikes = isLiked ? totalLikes + 1 : totalLikes - 1;
-
-  likeCounter.textContent = totalLikes;
-});
+let selectedSizeId = null;
+let selectedSize = null;
 
 const params = new URLSearchParams(window.location.search);
 const productId = params.get('id');
+
+const cartButton = document.getElementById('cartButton');
+ updateAddToCartButtonState();
+
+cartButton.addEventListener('click', () => {
+  api.addToCart(productId, selectedSizeId)
+    .then(() => {
+      totalCartItems++;
+      orderCounter.textContent = totalCartItems;
+      cartButton.textContent = "В корзине";
+      cartButton.disabled = true;
+    })
+    .catch(error => {
+      logger.consoleLog(error);
+    });
+});
+
+const likeButton = document.getElementById('likeButton');
+likeButton.addEventListener('click', onLikeToggle);
 
 try {
   const data = await api.getProductById(productId)
@@ -45,10 +39,10 @@ try {
   logger.consoleLog(error);
 }
 
-
 function initProductPage(data) {
   const mainPhoto = document.getElementById('main-photo');
-  mainPhoto.innerHTML = `<img src="http://localhost:5120${data.imagesPath[0]}" alt="${data.name}">`;
+  mainPhoto.innerHTML =
+    `<img src="http://localhost:5120${data.imagesPath[0]}" alt="${data.name}">`;
 
   const thumbnails = document.getElementById('thumbnails');
   thumbnails.innerHTML = '';
@@ -72,6 +66,7 @@ function initProductPage(data) {
   document.getElementById('product-title').textContent = data.name;
 
   const priceElem = document.getElementById('product-price');
+  
   if (data.discountPrice) {
     priceElem.innerHTML = `${data.price}$ <del class="product-discount">${data.discountPrice}$</del>`;
   }
@@ -82,11 +77,11 @@ function initProductPage(data) {
   const sizesContainer = document.getElementById('sizes');
   sizesContainer.innerHTML = '';
 
-  data.sizesLabel.forEach((size, index) => {
+  data.sizes.forEach((size) => {
     const btn = document.createElement('button');
     btn.className = 'size-btn';
-    if (index === 0) btn.classList.add('selected');
-    btn.textContent = size;
+    btn.dataset.sizeId = size.id;
+    btn.textContent = size.label;
     sizesContainer.appendChild(btn);
   });
 
@@ -98,7 +93,7 @@ function initProductPage(data) {
 
   document.getElementById('product-description').textContent = data.description;
 
-  const thumbnailsImages = document.querySelectorAll('.thumbnails img');
+  const thumbnailsImages = document.querySelectorAll('#thumbnails img');
   const mainImage = document.querySelector('#main-photo img');
   thumbnailsImages.forEach(thumb => {
     thumb.addEventListener('click', function () {
@@ -113,6 +108,37 @@ function initProductPage(data) {
     btn.addEventListener('click', function () {
       sizeBtns.forEach(b => b.classList.remove('selected'));
       this.classList.add('selected');
+
+      selectedSizeId = this.dataset.sizeId;
+      selectedSize = this.textContent;
+      updateAddToCartButtonState();
     });
   });
+}
+
+function updateAddToCartButtonState() {
+  if (selectedSizeId !== null && selectedSize !== null) {
+    cartButton.disabled = false;
+  } else {
+    cartButton.disabled = true;
+  }
+}
+
+async function onLikeToggle() {
+  isLiked = !isLiked;
+  likeButton.src = isLiked ? 'sources/addedfavorite.svg' : 'sources/favorite.svg';
+  try {
+    if (isLiked) {
+      await api.addToFavorite(productId);
+      totalLikes++;
+    }
+    else {
+      await api.removeFavorite(productId);
+      totalLikes--;
+    }
+
+    likeCounter.textContent = totalLikes;
+  } catch (error) {
+    logger.consoleLog("Ошибка продукта " + error);
+  }
 }
