@@ -98,19 +98,26 @@ function createCartItem(cartItem) {
     if (quantity > 1) {
       quantity--;
       totalCartItems--;
+      console.log(cartItem.id);
 
-      updateItemsAmount();
+      api.editCartItem(cartItem.id, quantity)
+        .then(() => {
+          quantityValue.textContent = quantity;
+          price = quantity * cartItem.product.price;
+          discountPrice = quantity * cartItem.product.discountPrice;
 
-      quantityValue.textContent = quantity;
-      price = quantity * cartItem.product.price;
-      discountPrice = quantity * cartItem.product.discountPrice;
+          updateItemsAmount();
 
-      if (product.discountPrice) {
-        priceDiv.innerHTML = `${product.discountPrice}$ <del class="product-discount">${product.price}$</del>`;
-      }
-      else {
-        priceDiv.textContent = `${product.price}$`;
-      }
+          if (cartItem.product.discountPrice) {
+            priceDiv.innerHTML = `${cartItem.product.discountPrice}$ <del class="product-discount">${cartItem.product.price}$</del>`;
+          }
+          else {
+            priceDiv.textContent = `${cartItem.product.price}$`;
+          }
+        })
+        .catch(error => {
+          logger.handleError(error, cartItemsContainer);
+        });
     }
     else {
       showDeleteConfirmation(() => {
@@ -137,12 +144,24 @@ function createCartItem(cartItem) {
     quantity++;
     totalCartItems++;
 
-    quantityValue.textContent = quantity;
-    price = quantity * cartItem.product.price;
-    discountPrice = quantity * cartItem.product.discountPrice;
-    updateItemsAmount();
+    api.editCartItem(cartItem.id, quantity)
+      .then(() => {
+         quantityValue.textContent = quantity;
+          price = quantity * cartItem.product.price;
+          discountPrice = quantity * cartItem.product.discountPrice;
 
-    priceDiv.innerHTML = `${price}$ <del class="product-discount">${discountPrice || ''}$</del>`;
+          updateItemsAmount();
+
+          if (cartItem.product.discountPrice) {
+            priceDiv.innerHTML = `${cartItem.product.discountPrice}$ <del class="product-discount">${cartItem.product.price}$</del>`;
+          }
+          else {
+            priceDiv.textContent = `${cartItem.product.price}$`;
+          }
+      })
+      .catch(error => {
+        logger.handleError(error, cartItemsContainer);
+      });
   });
 
   qtyDiv.appendChild(trashImg);
