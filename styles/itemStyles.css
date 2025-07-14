@@ -1,63 +1,7 @@
-.sidebar {
-  height: 40%;
-  width: 0;
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: var(--accent-color);
-  transition: 0.3s;
-  overflow-x: hidden;
-  padding-top: 20px;
-  border-bottom: 2px solid #504241;
-  border-right: 2px solid #504241;
-  box-sizing: border-box;
-}
-
-.sidebar a {
-  padding: 5px 15px;
-  font-size: 30px;
-  color: white;
-  display: block;
-  transition: 0.3s;
-}
-
-.openBtn {
-  font-size: 20px;
-  cursor: pointer;
-  padding: 10px 15px;
-  margin-right: 10px;
-  background: none;
-  border: none;
-  border-radius: 50%;
-}
-
-.openBtn img {
-  color: black;
-  width: 25px;
-  height: 25;
-}
-
-.sidebar.open {
-  width: 250px;
-}
-
-header {
-  padding: 15px 30px;
-  display: flex;
-  background-color: var(--main-color);
-  justify-content: space-between;
-  box-shadow: 0 2px 5px rgb(0 0 0 / 0.2);
-  align-items: center;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-
 main {
   background-color: var(--accent-color);
   display: flex;
   flex-direction: column;
-  flex: 1;
 }
 
 .container {
@@ -66,6 +10,10 @@ main {
   margin: 40px auto;
   gap: 40px;
   padding: 0 20px;
+}
+
+.logo{
+  margin-left: 20px;
 }
 
 .right {
@@ -117,6 +65,16 @@ main {
   border: 2px solid #ff4081;
 }
 
+.thumbnails img:hover{
+  transform: scale(1.05);
+  transition: 0.2s ease;
+  box-shadow: 0 0 20px #9D403D;
+}
+
+.product-description, .product-params, .section-title, .product-title, .product-price{
+  cursor: default;
+}
+
 .product-title {
   font-size: 28px;
   font-weight: bold;
@@ -129,10 +87,23 @@ main {
   margin-bottom: 8px;
 }
 
-.product-discount {
-  font-size: 16px;
-  color: rgb(37, 37, 37);
+.original-price{
+  position: relative;
+  display: inline-block;
+  font-size: 17px;
+   color: rgb(37, 37, 37);
   margin-bottom: 16px;
+}
+
+.original-price::after{
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 60%;
+  width: 100%;
+  height: 2px;
+  background: #ff4081;
+  transform: rotate(-15deg);
 }
 
 .sizes {
@@ -157,6 +128,12 @@ main {
   cursor: pointer;
   font-size: 16px;
   transition: border 0.2s;
+}
+
+.size-btn:hover{
+  transform: scale(1.05);
+  transition: 0.2s ease;
+  box-shadow: 0 0 20px #9D403D;
 }
 
 .size-btn.selected {
@@ -222,6 +199,7 @@ main {
   color: #333;
   line-height: 1.7;
 }
+
 
 @media (max-width: 900px) {
   .container {

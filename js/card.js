@@ -23,7 +23,7 @@ export function createCard(product, onLikeToggle, isLiked = false) {
   price.className = 'card-price';
   
   if (product.discountPrice) {
-    price.innerHTML = `${product.discountPrice}$ <del class="product-discount">${product.price}$</del>`;
+    price.innerHTML = `${product.discountPrice}$ <span class="original-price">${product.price}$</span>`;
   }
   else {
     price.textContent = `${product.price}$`;

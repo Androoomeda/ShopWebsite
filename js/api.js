@@ -17,7 +17,12 @@ export async function getCategoryProducts(categoryName) {
 }
 
 export async function getProductById(productId) {
-  const response = await fetch(`http://localhost:5120/api/products/${productId}`)
+  const response = await fetch(`http://localhost:5120/api/products/${productId}`, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include'
+    });
 
   if (!response.ok) throw new Error(`Ошибка загрузки продукта c id=${productId}: 
     ${response.statusText}`);
@@ -139,7 +144,7 @@ export async function removeCartItem(productId){
 
 async function handleApiResponse(response) {
   if (response.status === 401) {
-    window.location.hre = 'auth.html';
+    window.location.href = 'auth.html';
     return Promise.reject(new Error('Unauthorized'));
   }
 
