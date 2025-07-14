@@ -1,19 +1,19 @@
 import * as api from './api.js';
 import * as logger from './logger.js';
+import * as userInfo from './userInfo.js';
 
-const orderCounter = document.getElementById('orderCounter');
-const likeCounter = document.getElementById('likeCounter');
+
 const cartItemsContainer = document.getElementById('cart-items');
-
+const itemsAmount = document.getElementById('items-amount');
 const totalOriginalPrice = document.getElementById('total-original-price');
 const totalDiscount = document.getElementById('total-discount');
 const totalPrice = document.getElementById('total-price');
-const itemsAmount = document.getElementById('items-amount');
 
 let totalCartItems = 0;
 let totalLikes = 0;
 
 loadProducts();
+userInfo.loadUserInfoCounters();
 
 async function loadProducts() {
   try {
@@ -32,8 +32,6 @@ function renderCartItems(data) {
     return;
   }
 
-  totalCartItems = data.cartItems.length;
-  updateItemsAmount();
   updateTotals(data);
 
   data.cartItems.forEach(cartItem => {
@@ -44,8 +42,8 @@ function renderCartItems(data) {
 
 function createCartItem(cartItem) {
   let quantity = cartItem.quantity;
-  let price = cartItem.product.price;
-  let discountPrice = cartItem.product.discountPrice;
+  let price = cartItem.product.price * cartItem.quantity;
+  let discountPrice = cartItem.product.discountPrice * cartItem.quantity;
 
   const cartItemDiv = document.createElement('div');
   cartItemDiv.className = 'cart-item';
@@ -74,10 +72,7 @@ function createCartItem(cartItem) {
     showDeleteConfirmation(() => {
       api.removeCartItem(cartItem.product.id)
         .then(() => {
-          cartItemDiv.remove();
-          totalCartItems--;
-          orderCounter.textContent = totalCartItems;
-          itemsAmount.textContent = totalCartItems;
+          loadProducts();
         })
         .catch(error => {
           logger.handleError(error, cartItemsContainer);
@@ -96,24 +91,10 @@ function createCartItem(cartItem) {
 
   btnMinus.addEventListener('click', () => {
     if (quantity > 1) {
-      quantity--;
-      totalCartItems--;
-      console.log(cartItem.id);
 
-      api.editCartItem(cartItem.id, quantity)
+      api.editCartItem(cartItem.id, quantity - 1)
         .then(() => {
-          quantityValue.textContent = quantity;
-          price = quantity * cartItem.product.price;
-          discountPrice = quantity * cartItem.product.discountPrice;
-
-          updateItemsAmount();
-
-          if (cartItem.product.discountPrice) {
-            priceDiv.innerHTML = `${cartItem.product.discountPrice}$ <del class="product-discount">${cartItem.product.price}$</del>`;
-          }
-          else {
-            priceDiv.textContent = `${cartItem.product.price}$`;
-          }
+          loadProducts();
         })
         .catch(error => {
           logger.handleError(error, cartItemsContainer);
@@ -123,10 +104,7 @@ function createCartItem(cartItem) {
       showDeleteConfirmation(() => {
         api.removeCartItem(cartItem.product.id)
           .then(() => {
-            cartItemDiv.remove();
-            totalCartItems--;
-
-            updateItemsAmount();
+            loadProducts();
           })
           .catch(error => {
             logger.handleError(error, cartItemsContainer);
@@ -146,18 +124,7 @@ function createCartItem(cartItem) {
 
     api.editCartItem(cartItem.id, quantity)
       .then(() => {
-         quantityValue.textContent = quantity;
-          price = quantity * cartItem.product.price;
-          discountPrice = quantity * cartItem.product.discountPrice;
-
-          updateItemsAmount();
-
-          if (cartItem.product.discountPrice) {
-            priceDiv.innerHTML = `${cartItem.product.discountPrice}$ <del class="product-discount">${cartItem.product.price}$</del>`;
-          }
-          else {
-            priceDiv.textContent = `${cartItem.product.price}$`;
-          }
+        loadProducts();
       })
       .catch(error => {
         logger.handleError(error, cartItemsContainer);
@@ -243,12 +210,8 @@ function showDeleteConfirmation(onDelete) {
   });
 }
 
-function updateItemsAmount() {
-  orderCounter.textContent = totalCartItems;
-  itemsAmount.textContent = totalCartItems;
-}
-
 function updateTotals(data) {
+  itemsAmount.textContent = data.totalQuantity;
   totalOriginalPrice.textContent = data.totalOriginalPrice + '$';
   totalDiscount.textContent = data.totalDiscount + '$';
   totalPrice.textContent = data.totalPrice + '$';
