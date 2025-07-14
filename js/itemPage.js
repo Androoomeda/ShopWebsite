@@ -3,34 +3,18 @@ import * as logger from './logger.js'
 
 const likeCounter = document.getElementById('likeCounter');
 const orderCounter = document.getElementById('orderCounter');
+const likeButton = document.getElementById('likeButton');
+const cartButton = document.getElementById('cartButton');
 
 let totalLikes = 0;
 let totalCartItems = 0;
-let isLiked = false;
+let isLiked;
+let isInCart;
 let selectedSizeId = null;
 let selectedSize = null;
 
 const params = new URLSearchParams(window.location.search);
 const productId = params.get('id');
-
-const cartButton = document.getElementById('cartButton');
- updateAddToCartButtonState();
-
-cartButton.addEventListener('click', () => {
-  api.addToCart(productId, selectedSizeId)
-    .then(() => {
-      totalCartItems++;
-      orderCounter.textContent = totalCartItems;
-      cartButton.textContent = "В корзине";
-      cartButton.disabled = true;
-    })
-    .catch(error => {
-      logger.consoleLog(error);
-    });
-});
-
-const likeButton = document.getElementById('likeButton');
-likeButton.addEventListener('click', onLikeToggle);
 
 try {
   const data = await api.getProductById(productId)
@@ -39,15 +23,15 @@ try {
   logger.consoleLog(error);
 }
 
-function initProductPage(data) {
+function initProductPage(product) {
   const mainPhoto = document.getElementById('main-photo');
   mainPhoto.innerHTML =
-    `<img src="http://localhost:5120${data.imagesPath[0]}" alt="${data.name}">`;
+    `<img src="http://localhost:5120${product.imagesPath[0]}" alt="${product.name}">`;
 
   const thumbnails = document.getElementById('thumbnails');
   thumbnails.innerHTML = '';
 
-  data.imagesPath.forEach((imgSrc, index) => {
+  product.imagesPath.forEach((imgSrc, index) => {
     const img = document.createElement('img');
     img.src = `http://localhost:5120${imgSrc}`;
     img.alt = `thumb${index + 1}`;
@@ -63,21 +47,20 @@ function initProductPage(data) {
     thumbnails.appendChild(img);
   });
 
-  document.getElementById('product-title').textContent = data.name;
+  document.getElementById('product-title').textContent = product.name;
 
   const priceElem = document.getElementById('product-price');
-  
-  if (data.discountPrice) {
-    priceElem.innerHTML = `${data.price}$ <del class="product-discount">${data.discountPrice}$</del>`;
+  if (product.discountPrice) {
+    priceElem.innerHTML = `${product.discountPrice}$ <span class="original-price">${product.price}$</span>`;
   }
   else {
-    priceElem.textContent = `${data.price}$`;
+    priceElem.textContent = `${product.price}$`;
   }
 
   const sizesContainer = document.getElementById('sizes');
   sizesContainer.innerHTML = '';
 
-  data.sizes.forEach((size) => {
+  product.sizes.forEach((size) => {
     const btn = document.createElement('button');
     btn.className = 'size-btn';
     btn.dataset.sizeId = size.id;
@@ -85,13 +68,33 @@ function initProductPage(data) {
     sizesContainer.appendChild(btn);
   });
 
+  isInCart = product.isInCart;
+  updateAddToCartButtonState();
+  checkAddedState();
+
+  cartButton.addEventListener('click', () => {
+    api.addToCart(productId, selectedSizeId)
+      .then(() => {
+        totalCartItems++;
+        orderCounter.textContent = totalCartItems;
+        checkAddedState();
+      })
+      .catch(error => {
+        logger.consoleLog(error);
+      });
+  });
+
+  isLiked = product.isFavorite;
+  likeButton.src = isLiked ? 'sources/addedfavorite.svg' : 'sources/favorite.svg';
+  likeButton.addEventListener('click', onLikeToggle);
+
   const paramsElem = document.getElementById('product-params');
   paramsElem.innerHTML = `
-      <b>Type:</b> ${data.categoryName}<br>
-      <b>Color:</b> ${data.color}<br>
-      <b>Артикул:</b> ${data.id}`;
+      <b>Type:</b> ${product.categoryName}<br>
+      <b>Color:</b> ${product.color}<br>
+      <b>Артикул:</b> ${product.id}`;
 
-  document.getElementById('product-description').textContent = data.description;
+  document.getElementById('product-description').textContent = product.description;
 
   const thumbnailsImages = document.querySelectorAll('#thumbnails img');
   const mainImage = document.querySelector('#main-photo img');
@@ -117,9 +120,19 @@ function initProductPage(data) {
 }
 
 function updateAddToCartButtonState() {
+  if(isInCart) return;
+
   if (selectedSizeId !== null && selectedSize !== null) {
     cartButton.disabled = false;
   } else {
+    cartButton.disabled = true;
+  }
+}
+
+function checkAddedState() {
+  if (isInCart) {
+    cartButton.textContent = "В корзине";
+    cartButton.style.backgroundColor = 'green';
     cartButton.disabled = true;
   }
 }

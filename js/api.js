@@ -1,3 +1,17 @@
+export async function getUserInfo() {
+  const response = await fetch('http://localhost:5120/api/shopuser', {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  });
+
+  if (!response.ok) throw new Error(`Ошибка загрузки информации пользователя: 
+    ${response.statusText}`);
+
+  return response.json();
+}
+
 export async function getProducts() {
   const response = await fetch('http://localhost:5120/api/products')
 
@@ -17,7 +31,12 @@ export async function getCategoryProducts(categoryName) {
 }
 
 export async function getProductById(productId) {
-  const response = await fetch(`http://localhost:5120/api/products/${productId}`)
+  const response = await fetch(`http://localhost:5120/api/products/${productId}`, {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  });
 
   if (!response.ok) throw new Error(`Ошибка загрузки продукта c id=${productId}: 
     ${response.statusText}`);
@@ -79,19 +98,19 @@ export async function removeFavorite(productId) {
   return handleApiResponse(response);
 }
 
-export async function getCartItems(){
+export async function getCartItems() {
   const response = await fetch(`http://localhost:5120/api/cartitem`,
-  {
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    credentials: 'include'
-  });
+    {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include'
+    });
 
   return handleApiResponse(response);
 }
 
-export async function addToCart(productId, sizeId){
+export async function addToCart(productId, sizeId) {
   const data = {
     productId: productId,
     sizeId: sizeId
@@ -109,7 +128,7 @@ export async function addToCart(productId, sizeId){
   return handleApiResponse(response);
 }
 
-export async function editCartItem(productId, quantity){
+export async function editCartItem(productId, quantity) {
   const data = { quantity: quantity };
 
   const response = await fetch(`http://localhost:5120/api/cartitem/${productId}`, {
@@ -124,8 +143,8 @@ export async function editCartItem(productId, quantity){
   return handleApiResponse(response);
 }
 
-export async function removeCartItem(productId){
-   const response = await fetch(`http://localhost:5120/api/cartitem/${productId}`,
+export async function removeCartItem(productId) {
+  const response = await fetch(`http://localhost:5120/api/cartitem/${productId}`,
     {
       method: 'DELETE',
       headers: {
@@ -139,7 +158,7 @@ export async function removeCartItem(productId){
 
 async function handleApiResponse(response) {
   if (response.status === 401) {
-    window.location.hre = 'auth.html';
+    window.location.href = 'auth.html';
     return Promise.reject(new Error('Unauthorized'));
   }
 
