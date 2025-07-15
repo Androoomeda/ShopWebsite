@@ -48,11 +48,11 @@ emailInput.addEventListener('input', () => {
   emailValue = emailInput.value.trim();
 
   if (emailValue === '')
-    passwordError.style.display = 'none';
+    emailError.style.display = 'none';
   else if (!validateEmail(emailValue))
-    passwordError.style.display = 'block';
+    emailError.style.display = 'block';
   else
-    passwordError.style.display = 'none';
+    emailError.style.display = 'none';
 
   updateRegisterButton();
 });
@@ -76,8 +76,6 @@ acceptCheckbox.addEventListener("click", updateRegisterButton);
 registerBtn.addEventListener('click', async (event) => {
   event.preventDefault();
 
-  passwordError.style.display = 'none';
-  passwordError.textContent = '';
   emailError.style.display = 'none';
   emailError.textContent = '';
 
@@ -107,8 +105,8 @@ registerBtn.addEventListener('click', async (event) => {
         emailError.style.display = 'block';
       }
       else if (error.field === 'email') {
-        passwordError.textContent = error.message;
-        passwordError.style.display = 'block';
+        emailError.textContent = error.message;
+        emailError.style.display = 'block';
       } else {
         logger.consoleLog('Ошибка регистрации: ' + (error.message || response.statusText));
         alert('Ошибка регистрации: ' + (error.message || response.statusText));
