@@ -1,14 +1,9 @@
 import * as api from './api.js';
 import * as logger from './logger.js';
 import { createCard } from './card.js';
+import { loadUserInfoCounters } from './userInfo.js';
 
-const orderCounter = document.getElementById('orderCounter');
-const likeCounter = document.getElementById('likeCounter');
 const productList = document.getElementById('product-list');
-
-let totalCartItems = 0;
-let totalLikes = 0;
-
 const sidebar = document.getElementById('sidebar');
 
 document.getElementById('openBtn').onclick = function () {
@@ -31,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 loadProducts();
+loadUserInfoCounters();
 
 async function loadProducts() {
   try {
@@ -56,32 +52,23 @@ async function onCategoryClick(categoryName) {
 function renderProducts(products) {
   productList.innerHTML = '';
 
-  totalLikes = products.length;
-  likeCounter.textContent = totalLikes;
-
   products.forEach(product => {
-    const card = createCard(product, onAddToCart, onLikeToggle, true);
+    const card = createCard(product, onLikeToggle, true);
     productList.appendChild(card);
   });
-}
-
-function onAddToCart() {
-  totalCartItems++;
-  orderCounter.textContent = totalCartItems;
 }
 
 async function onLikeToggle(isLiked, productId) {
   try {
     if (isLiked) {
       await api.addToFavorite(productId)
-      totalLikes++;
     }
     else {
       await api.removeFavorite(productId)
-      totalLikes--;
     }
 
-    likeCounter.textContent = totalLikes;
+    loadUserInfoCounters();
+
   } catch (error) {
     logger.consoleLog("Ошибка продукта " + error)
   }

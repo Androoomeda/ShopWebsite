@@ -1,4 +1,7 @@
 import * as logger from './logger.js';
+import { loadUserInfoCounters } from './userInfo.js';
+
+loadUserInfoCounters();
 
 const emailInput = document.getElementById('email');
 const emailError = document.getElementById('emailError');

@@ -1,13 +1,10 @@
 import * as api from './api.js'
 import * as logger from './logger.js'
+import { loadUserInfoCounters } from './userInfo.js';
 
-const likeCounter = document.getElementById('likeCounter');
-const orderCounter = document.getElementById('orderCounter');
 const likeButton = document.getElementById('likeButton');
 const cartButton = document.getElementById('cartButton');
 
-let totalLikes = 0;
-let totalCartItems = 0;
 let isLiked;
 let isInCart;
 let selectedSizeId = null;
@@ -16,14 +13,19 @@ let selectedSize = null;
 const params = new URLSearchParams(window.location.search);
 const productId = params.get('id');
 
-try {
-  const data = await api.getProductById(productId)
-  initProductPage(data)
-} catch (error) {
-  logger.consoleLog(error);
+loadItem();
+loadUserInfoCounters();
+
+async function  loadItem(){
+  try {
+    const data = await api.getProductById(productId)
+    initProductPage(data)
+  } catch (error) {
+    logger.consoleLog(error);
+  }
 }
 
-function initProductPage(product) {
+async function initProductPage(product) {
   const mainPhoto = document.getElementById('main-photo');
   mainPhoto.innerHTML =
     `<img src="http://localhost:5120${product.imagesPath[0]}" alt="${product.name}">`;
@@ -69,15 +71,15 @@ function initProductPage(product) {
   });
 
   isInCart = product.isInCart;
-  updateAddToCartButtonState();
+  updateCartButtonState();
   checkAddedState();
 
   cartButton.addEventListener('click', () => {
     api.addToCart(productId, selectedSizeId)
       .then(() => {
-        totalCartItems++;
-        orderCounter.textContent = totalCartItems;
+        isInCart = true;
         checkAddedState();
+        loadUserInfoCounters();
       })
       .catch(error => {
         logger.consoleLog(error);
@@ -111,16 +113,16 @@ function initProductPage(product) {
     btn.addEventListener('click', function () {
       sizeBtns.forEach(b => b.classList.remove('selected'));
       this.classList.add('selected');
-
       selectedSizeId = this.dataset.sizeId;
       selectedSize = this.textContent;
-      updateAddToCartButtonState();
+
+      updateCartButtonState();
     });
   });
 }
 
-function updateAddToCartButtonState() {
-  if(isInCart) return;
+function updateCartButtonState() {
+  if (isInCart) return;
 
   if (selectedSizeId !== null && selectedSize !== null) {
     cartButton.disabled = false;
@@ -130,7 +132,7 @@ function updateAddToCartButtonState() {
 }
 
 function checkAddedState() {
-  if (isInCart) {
+  if(isInCart){
     cartButton.textContent = "В корзине";
     cartButton.style.backgroundColor = 'green';
     cartButton.disabled = true;
@@ -139,18 +141,18 @@ function checkAddedState() {
 
 async function onLikeToggle() {
   isLiked = !isLiked;
-  likeButton.src = isLiked ? 'sources/addedfavorite.svg' : 'sources/favorite.svg';
+  
   try {
     if (isLiked) {
       await api.addToFavorite(productId);
-      totalLikes++;
     }
     else {
       await api.removeFavorite(productId);
-      totalLikes--;
     }
 
-    likeCounter.textContent = totalLikes;
+    likeButton.src = isLiked ? 'sources/addedfavorite.svg' : 'sources/favorite.svg';
+    loadUserInfoCounters();
+
   } catch (error) {
     logger.consoleLog("Ошибка продукта " + error);
   }

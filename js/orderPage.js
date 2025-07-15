@@ -1,6 +1,6 @@
 import * as api from './api.js';
 import * as logger from './logger.js';
-import * as userInfo from './userInfo.js';
+import { loadUserInfoCounters } from './userInfo.js';
 
 
 const cartItemsContainer = document.getElementById('cart-items');
@@ -9,11 +9,8 @@ const totalOriginalPrice = document.getElementById('total-original-price');
 const totalDiscount = document.getElementById('total-discount');
 const totalPrice = document.getElementById('total-price');
 
-let totalCartItems = 0;
-let totalLikes = 0;
-
 loadProducts();
-userInfo.loadUserInfoCounters();
+loadUserInfoCounters();
 
 async function loadProducts() {
   try {
@@ -26,13 +23,12 @@ async function loadProducts() {
 
 function renderCartItems(data) {
   cartItemsContainer.innerHTML = '';
+  updateTotals(data);
 
   if (!data.cartItems || data.cartItems.length === 0) {
     cartItemsContainer.innerHTML = '<p>Ваша корзина пуста.<p>';
     return;
   }
-
-  updateTotals(data);
 
   data.cartItems.forEach(cartItem => {
     const card = createCartItem(cartItem);
@@ -120,7 +116,6 @@ function createCartItem(cartItem) {
 
   btnPlus.addEventListener('click', () => {
     quantity++;
-    totalCartItems++;
 
     api.editCartItem(cartItem.id, quantity)
       .then(() => {
@@ -211,8 +206,8 @@ function showDeleteConfirmation(onDelete) {
 }
 
 function updateTotals(data) {
-  itemsAmount.textContent = data.totalQuantity;
-  totalOriginalPrice.textContent = data.totalOriginalPrice + '$';
-  totalDiscount.textContent = data.totalDiscount + '$';
-  totalPrice.textContent = data.totalPrice + '$';
+  itemsAmount.textContent = data ? data.totalQuantity : 0;
+  totalOriginalPrice.textContent = (data ? data.totalOriginalPrice : 0) + '$';
+  totalDiscount.textContent = (data ? data.totalDiscount : 0) + '$';
+  totalPrice.textContent = (data ? data.totalPrice : 0) + '$';
 }

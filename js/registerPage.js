@@ -1,4 +1,7 @@
 import * as logger from './logger.js';
+import { loadUserInfoCounters } from './userInfo.js';
+
+loadUserInfoCounters();
 
 document.querySelectorAll('.toggle-password').forEach(button => {
   button.addEventListener('click', () => {

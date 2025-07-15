@@ -1,14 +1,13 @@
 import * as api from './api.js';
 import * as logger from './logger.js';
 import { createCard } from './card.js';
-import * as userInfo from './userInfo.js';
+import { loadUserInfoCounters } from './userInfo.js';
 
 const productList = document.getElementById('product-list');
+const sidebar = document.getElementById('sidebar');
 
 loadProducts();
-userInfo.loadUserInfoCounters();
-
-const sidebar = document.getElementById('sidebar');
+loadUserInfoCounters();
 
 document.getElementById('openBtn').onclick = function () {
   sidebar.classList.add('open');
@@ -77,7 +76,7 @@ async function onLikeToggle(isLiked, productId) {
       await api.removeFavorite(productId);
     }
 
-    userInfo.loadUserInfoCounters();
+    loadUserInfoCounters();
 
   } catch (error) {
     logger.consoleLog("Ошибка продукта " + error)
