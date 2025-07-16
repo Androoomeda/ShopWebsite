@@ -39,7 +39,7 @@ function renderCartItems(data) {
 function createCartItem(cartItem) {
   let quantity = cartItem.quantity;
   let price = cartItem.product.price * cartItem.quantity;
-  let discountPrice = cartItem.product.discountPrice * cartItem.quantity;
+  let originalPrice = cartItem.product.discountPrice * cartItem.quantity;
 
   const cartItemDiv = document.createElement('div');
   cartItemDiv.className = 'cart-item';
@@ -152,8 +152,8 @@ function createCartItem(cartItem) {
   const priceDiv = document.createElement('div');
   priceDiv.className = 'cart-item-price';
 
-  if (discountPrice) {
-    priceDiv.innerHTML = `${discountPrice}$ <del class="product-discount">${price}$</del>`;
+  if (originalPrice) {
+    priceDiv.innerHTML = `${originalPrice}$ <span class="original-price">${price}$</span>`;
   }
   else {
     priceDiv.textContent = `${price}$`;

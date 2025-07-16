@@ -119,9 +119,23 @@ main {
   color: #ff4081;
 }
 
-.product-discount {
-  font-size: 16px;
-  color: rgb(37, 37, 37);
+.original-price{
+  position: relative;
+  display: inline-block;
+  font-size: 17px;
+   color: rgb(37, 37, 37);
+  margin-bottom: 16px;
+}
+
+.original-price::after{
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 60%;
+  width: 100%;
+  height: 2px;
+  background: #ff4081;
+  transform: rotate(-15deg);
 }
 
 .cart-summary {
