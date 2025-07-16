@@ -5,8 +5,8 @@ body {
   background-repeat: no-repeat;
 }
 
-.wrapper {
-  min-height: 100vh;
+.logo{
+  margin-left: 40px;
 }
 
 main {

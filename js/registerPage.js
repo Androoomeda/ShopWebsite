@@ -1,7 +1,5 @@
+import { registerUser } from './api.js';
 import * as logger from './logger.js';
-import { loadUserInfoCounters } from './userInfo.js';
-
-loadUserInfoCounters();
 
 document.querySelectorAll('.toggle-password').forEach(button => {
   button.addEventListener('click', () => {
@@ -42,7 +40,7 @@ let passwordValue;
 let repeatValue;
 let emailValue;
 
-emailInput.addEventListener('input', updateRegisterButton);
+usernameInput.addEventListener('input', updateRegisterButton);
 
 emailInput.addEventListener('input', () => {
   emailValue = emailInput.value.trim();
@@ -86,13 +84,8 @@ registerBtn.addEventListener('click', async (event) => {
   }
 
   try {
-    const response = await fetch('http://localhost:5120/api/ShopUser/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    });
+    const response = registerUser(data);
+    
     if (response.ok) {
       window.location.href = 'auth.html';
       logger.consoleLog('Регистрация прошла успешно');
@@ -101,8 +94,8 @@ registerBtn.addEventListener('click', async (event) => {
       const error = await response.json();
 
       if (error.field === 'username') {
-        emailError.textContent = error.message;
-        emailError.style.display = 'block';
+        usernameError.textContent = error.message;
+        usernameError.style.display = 'block';
       }
       else if (error.field === 'email') {
         emailError.textContent = error.message;
@@ -149,7 +142,7 @@ function updateRegisterButton() {
   const allValid = validateEmail(emailValue) &&
     allChecked &&
     emailInput.value.trim() !== '' &&
-    emailInput.value.trim() !== '';
+    usernameInput.value.trim() !== '';
 
   registerBtn.disabled = !allValid;
 }

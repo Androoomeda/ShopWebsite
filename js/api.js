@@ -6,8 +6,11 @@ export async function getUserInfo() {
     credentials: 'include'
   });
 
-  if (!response.ok) throw new Error(`Ошибка загрузки информации пользователя: 
-    ${response.statusText}`);
+  if (!response.ok) {
+    const error = new Error('Ошибка загрузки информации пользователя');
+    error.status = response.status; 
+    throw error;
+  }
 
   return response.json();
 }
@@ -154,6 +157,44 @@ export async function removeCartItem(productId) {
     });
 
   return handleApiResponse(response);
+}
+
+export async function logoutUser(){
+  const response = await fetch(`http://localhost:5120/api/shopuser/logout`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include'
+    });
+
+  return response;
+}
+
+export async function loginUser(data){
+  const response = await fetch('http://localhost:5120/api/ShopUser/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data),
+      credentials: 'include'
+    });
+  
+    return response;
+}
+
+export async function registerUser(data){
+  const response = await fetch('http://localhost:5120/api/ShopUser/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+
+  return response;
 }
 
 async function handleApiResponse(response) {

@@ -3,8 +3,7 @@
 
 <head>
   <link rel="stylesheet" href="styles/common.css">
-  <link rel="stylesheet" href="styles/cardSyles.css">
-  <link rel="stylesheet" href="styles/mainAndFavorite.css">
+  <link rel="stylesheet" href="styles/profileStyles.css">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MLOGE Exclusive shop</title>
@@ -14,22 +13,9 @@
   <div class="wrapper">
     <header>
       <div class="header-left">
-        <button class="openBtn" id="openBtn"><img src="sources/menu.svg" alt=""></button>
-        <div id="sidebar" class="sidebar">
-          <a class="close-sidebar" href="javascript:void(0)" id="closeBtn">Close</a>
-          <a href="#" data-category="Hoodie">Hoodie</a>
-          <a href="#" data-category="Zip-up hoodie">Zip-up hoodie</a>
-          <a href="#" data-category="T-shirts">T-shirts</a>
-          <a href="#" data-category="Joggers">Trousers</a>
-          <a href="#" data-category="Shorts">Shorts</a>
-          <a href="#" data-category="Sneakers">Sneakers</a>
-        </div>
-
         <a class="logo" href="mainPage.html"><img src="sources/logo.jpg" alt=""></a>
         <p>Novosibirsk</p>
       </div>
-
-      <h1>FAVORITE</h1>
 
       <div class="header-right">
         <div class="search-box">
@@ -49,27 +35,28 @@
         </nav>
       </div>
     </header>
-    <main id="product-list">
-      <!-- <article class="card">
-        <img src="sources/catalog/catalog1.jpg" alt="">
-        <div class="card-body">
-          <h2 class="card-title">Hoodie universe</h2>
-          <div class="card-bottom">
-            <p class="card-price">59$</p>
-            <div class="card-bottom-right">
-              <button class="add-to-cart-button">В корзину</button>
-              <img class="removeButton" src="sources/trash.svg" alt="">
-            </div>
-          </div>
+
+    <main>
+      <form>
+        <h1>Profile</h1>
+        <div class="user-info">
+          <label>Username: <span id="username">username</span></label>
+
+          <label>Email: <span id="email">email</span></label>
+
+          <button class="confirm-btn" type="button">Confirm</button>
+          <label class="hint">подтвердите, чтобы тратить бонусы</label>
         </div>
-      </article> -->
+
+        <button id="logout" class="logout-btn" type="submit">Logout</button>
+      </form>
     </main>
 
     <footer>
       <nav>
         <a href="#about">About us</a>
         <a href="#help">Help</a>
-       <a href="https://github.com/Androoomeda">Contacts</a>
+        <a href="https://github.com/Androoomeda">Contacts</a>
       </nav>
       <nav>
         <a href="#brand">Brand</a>
@@ -80,7 +67,7 @@
       <p>2024 MLOGE. Все права защищены.</p>
     </footer>
   </div>
-  <script type="module" src="js/favoritePage.js"></script>
+  <script type="module" src="js/profilePage.js"></script>
 </body>
 
 </html>

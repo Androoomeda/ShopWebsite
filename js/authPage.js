@@ -1,7 +1,5 @@
 import * as logger from './logger.js';
-import { loadUserInfoCounters } from './userInfo.js';
-
-loadUserInfoCounters();
+import {loginUser, registerUser} from './api.js';
 
 const emailInput = document.getElementById('email');
 const emailError = document.getElementById('emailError');
@@ -39,14 +37,7 @@ authBtn.addEventListener('click', async (event) => {
   }
 
   try {
-    const response = await fetch('http://localhost:5120/api/ShopUser/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data),
-      credentials: 'include'
-    });
+    const response = await loginUser(data);
 
     if (response.ok) {
       window.location.href = 'mainPage.html';
