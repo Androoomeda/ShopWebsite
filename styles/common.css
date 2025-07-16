@@ -25,7 +25,7 @@ a{
   text-decoration: none;
 }
 
-h1{
+header h1{
   font-size: calc(12px + 8 * (100vw - 320px) / 880);
 }
 
@@ -38,6 +38,7 @@ a:hover{
   display: flex;
   flex-direction: column;
 }
+
 
 main{
   flex-grow: 1;

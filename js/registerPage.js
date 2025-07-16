@@ -1,7 +1,4 @@
 import * as logger from './logger.js';
-import { loadUserInfoCounters } from './userInfo.js';
-
-loadUserInfoCounters();
 
 document.querySelectorAll('.toggle-password').forEach(button => {
   button.addEventListener('click', () => {
@@ -42,7 +39,7 @@ let passwordValue;
 let repeatValue;
 let emailValue;
 
-emailInput.addEventListener('input', updateRegisterButton);
+usernameInput.addEventListener('input', updateRegisterButton);
 
 emailInput.addEventListener('input', () => {
   emailValue = emailInput.value.trim();
@@ -101,8 +98,8 @@ registerBtn.addEventListener('click', async (event) => {
       const error = await response.json();
 
       if (error.field === 'username') {
-        emailError.textContent = error.message;
-        emailError.style.display = 'block';
+        usernameError.textContent = error.message;
+        usernameError.style.display = 'block';
       }
       else if (error.field === 'email') {
         emailError.textContent = error.message;
@@ -149,7 +146,7 @@ function updateRegisterButton() {
   const allValid = validateEmail(emailValue) &&
     allChecked &&
     emailInput.value.trim() !== '' &&
-    emailInput.value.trim() !== '';
+    usernameInput.value.trim() !== '';
 
   registerBtn.disabled = !allValid;
 }
