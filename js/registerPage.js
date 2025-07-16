@@ -1,3 +1,4 @@
+import { registerUser } from './api.js';
 import * as logger from './logger.js';
 
 document.querySelectorAll('.toggle-password').forEach(button => {
@@ -83,13 +84,8 @@ registerBtn.addEventListener('click', async (event) => {
   }
 
   try {
-    const response = await fetch('http://localhost:5120/api/ShopUser/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    });
+    const response = registerUser(data);
+    
     if (response.ok) {
       window.location.href = 'auth.html';
       logger.consoleLog('Регистрация прошла успешно');

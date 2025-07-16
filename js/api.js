@@ -172,6 +172,31 @@ export async function logoutUser(){
   return response;
 }
 
+export async function loginUser(data){
+  const response = await fetch('http://localhost:5120/api/ShopUser/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data),
+      credentials: 'include'
+    });
+  
+    return response;
+}
+
+export async function registerUser(data){
+  const response = await fetch('http://localhost:5120/api/ShopUser/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+
+  return response;
+}
+
 async function handleApiResponse(response) {
   if (response.status === 401) {
     window.location.href = 'auth.html';
