@@ -29,31 +29,34 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 async function onCategoryClick(categoryName) {
-  try {
-    const [products, favorites] =
-      await Promise.all([api.getCategoryProducts(categoryName), safeGetFavoriteIds()]);
+  const [products, favorites] = await Promise.all([api.getCategoryProducts(categoryName), safeGetFavoriteIds()]);
 
-    renderProducts(products, favorites);
-  } catch (error) {
-    logger.handleError(error, productList);
+  if (products.success) {
+    renderProducts(products.data, favorites.success ? favorites.data : []);
+  }
+  else {
+    logger.handleError(products.error || favorites.error, productList);
   }
 }
 
 async function loadProducts() {
-  try {
-    const [products, favorites] = await Promise.all([api.getProducts(), safeGetFavoriteIds()]);
-    renderProducts(products, favorites);
-  } catch (error) {
-    logger.handleError(error, productList);
+  const [products, favorites] = await Promise.all([api.getProducts(), safeGetFavoriteIds()]);
+
+  if (products.success) {
+    renderProducts(products.data, favorites.success ? favorites.data : []);
+  }
+  else {
+    logger.handleError(products.error || favorites.error, productList);
   }
 }
 
 async function safeGetFavoriteIds() {
-  try {
-    return await api.getFavoriteIds();
-  } catch (error) {
-    return [];
-  }
+  const response = await api.getFavoriteIds();
+
+  if (!response.success)
+    logger.consoleLog(response.error);
+
+  return response;
 }
 
 function renderProducts(products, favorites) {
@@ -62,23 +65,7 @@ function renderProducts(products, favorites) {
 
   products.forEach(product => {
     const isLiked = favoriteIds.has(product.id);
-    const card = createCard(product, onLikeToggle, isLiked);
+    const card = createCard(product, isLiked);
     productList.appendChild(card);
   });
-}
-
-async function onLikeToggle(isLiked, productId) {
-  try {
-    if (isLiked) {
-      await api.addToFavorite(productId);
-    }
-    else {
-      await api.removeFavorite(productId);
-    }
-
-    loadUserInfoCounters();
-
-  } catch (error) {
-    logger.consoleLog("Ошибка продукта " + error)
-  }
 }

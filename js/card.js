@@ -1,4 +1,7 @@
-export function createCard(product, onLikeToggle, isLiked = false) {
+import * as api from './api.js';
+import {loadUserInfoCounters} from './userInfo.js';
+
+export function createCard(product, isLiked = false) {
   const card = document.createElement('article');
   card.className = 'card';
 
@@ -41,7 +44,7 @@ export function createCard(product, onLikeToggle, isLiked = false) {
   likeImg.addEventListener('click', () => {
     liked = !liked;
     likeImg.src = liked ? 'sources/addedfavorite.svg' : 'sources/favorite.svg';
-    onLikeToggle(liked, product.id);
+    onLikeToggle(product.id, liked);
   });
 
   cardBottomRight.appendChild(likeImg);
@@ -58,4 +61,20 @@ export function createCard(product, onLikeToggle, isLiked = false) {
   card.appendChild(cardBody);
 
   return card;
+}
+
+async function onLikeToggle(productId, liked) {
+  let response;
+
+  if (liked) {
+    response = await api.addToFavorite(productId)
+  }
+  else {
+    response = await api.removeFavorite(productId)
+  }
+
+  loadUserInfoCounters();
+
+  if (!response.success)
+    logger.consoleLog("Ошибка продукта " + response.error)
 }

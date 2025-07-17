@@ -11,31 +11,30 @@ logoutBtn.onclick = Logout;
 loadUserInfo()
 
 async function loadUserInfo() {
-  try {
-    const data = await api.getUserInfo();
+  const response = await api.getUserInfo();
+
+  if (response.unauthorized) {
+    window.location.href = 'auth.html';
+  } else {
+    logger.consoleLog(response.error);
+  }
+
+  if (response.success) {
+    const data = response.data
 
     username.textContent = data.username;
     email.textContent = data.email;
     likeCounter.textContent = data.favoritesCount;
     orderCounter.textContent = data.cartItemsCount;
-
-  } catch (error) {
-    if (error.status === 401) {
-      window.location.href = 'auth.html';
-    } else {
-      logger.consoleLog(error);
-    }
   }
 }
 
 async function Logout() {
-  try {
-    const response = await api.logoutUser();
+  const response = await api.logoutUser();
 
-    if (response.ok) {
-      window.location.href = 'auth.html';
-    }
-  } catch (error) {
-    logger.consoleLog(error);
+  if (response.success) {
+    window.location.href = 'auth.html';
+  } else {
+    logger.consoleLog(response.error);
   }
 }

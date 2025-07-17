@@ -15,6 +15,6 @@ export function showErrorMessageInContainer(message, container) {
 export function handleError(error, container) {
   const message = 'Ошибка: не удалось загрузить данные. Попробуйте позже. ';
   showErrorMessageInContainer(message, container);
-  consoleLog(message + error.message);
+  consoleLog(message);
 }
 

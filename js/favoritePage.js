@@ -29,47 +29,32 @@ loadProducts();
 loadUserInfoCounters();
 
 async function loadProducts() {
-  try {
-    const data = await api.getFavoriteProducts()
-    renderProducts(data);
-  } catch (error) {
-    logger.handleError(error, productList);
-  }
+  const response = await api.getFavoriteProducts()
+
+  if (response.success)
+    renderProducts(response.data);
+  else
+    logger.handleError(response.error, productList);
 }
 
 async function onCategoryClick(categoryName) {
-  try {
-    const [products, favorites] = await Promise.all([api.getCategoryProducts(categoryName), api.getFavoriteProducts()]);
-    const favoriteIds = new Set(favorites.map(fav => fav.id));
-    const favoriteProducts = products.filter(product => favoriteIds.has(product.id));
+  const [products, favorites] = await Promise.all([api.getCategoryProducts(categoryName), api.getFavoriteProducts()]);
+
+  if (products.success && favorites.success) {
+    const favoriteIds = new Set(favorites.data.map(fav => fav.id));
+    const favoriteProducts = products.data.filter(product => favoriteIds.has(product.id));
 
     renderProducts(favoriteProducts);
-  } catch (error) {
-    logger.handleError(error, productList);
   }
+  else
+    logger.handleError(products.message || favorites.message, productList);
 }
 
 function renderProducts(products) {
   productList.innerHTML = '';
 
   products.forEach(product => {
-    const card = createCard(product, onLikeToggle, true);
+    const card = createCard(product, true);
     productList.appendChild(card);
   });
-}
-
-async function onLikeToggle(isLiked, productId) {
-  try {
-    if (isLiked) {
-      await api.addToFavorite(productId)
-    }
-    else {
-      await api.removeFavorite(productId)
-    }
-
-    loadUserInfoCounters();
-
-  } catch (error) {
-    logger.consoleLog("Ошибка продукта " + error)
-  }
 }

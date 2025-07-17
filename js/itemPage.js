@@ -16,13 +16,13 @@ const productId = params.get('id');
 loadItem();
 loadUserInfoCounters();
 
-async function  loadItem(){
-  try {
-    const data = await api.getProductById(productId)
-    initProductPage(data)
-  } catch (error) {
+async function loadItem() {
+  const response = await api.getProductById(productId)
+
+  if (response.success)
+    initProductPage(response.data)
+  else
     logger.consoleLog(error);
-  }
 }
 
 async function initProductPage(product) {
@@ -75,15 +75,7 @@ async function initProductPage(product) {
   checkAddedState();
 
   cartButton.addEventListener('click', () => {
-    api.addToCart(productId, selectedSizeId)
-      .then(() => {
-        isInCart = true;
-        checkAddedState();
-        loadUserInfoCounters();
-      })
-      .catch(error => {
-        logger.consoleLog(error);
-      });
+   onAddToCart();
   });
 
   isLiked = product.isFavorite;
@@ -132,28 +124,40 @@ function updateCartButtonState() {
 }
 
 function checkAddedState() {
-  if(isInCart){
+  if (isInCart) {
     cartButton.textContent = "В корзине";
     cartButton.style.backgroundColor = 'green';
     cartButton.disabled = true;
   }
 }
 
+async function onAddToCart(){
+   const response = await api.addToCart(productId, selectedSizeId);
+
+    if (response.success) {
+      isInCart = true;
+      checkAddedState();
+      loadUserInfoCounters();
+    }
+    else
+      logger.consoleLog(response.error);
+}
+
 async function onLikeToggle() {
   isLiked = !isLiked;
+  let response;
   
-  try {
-    if (isLiked) {
-      await api.addToFavorite(productId);
-    }
-    else {
-      await api.removeFavorite(productId);
-    }
+  if (isLiked) {
+    response = await api.addToFavorite(productId);
+  }
+  else {
+    response = await api.removeFavorite(productId);
+  }
 
+  if (response.success) {
     likeButton.src = isLiked ? 'sources/addedfavorite.svg' : 'sources/favorite.svg';
     loadUserInfoCounters();
-
-  } catch (error) {
-    logger.consoleLog("Ошибка продукта " + error);
   }
+  else
+    logger.consoleLog("Ошибка продукта " + response.error);
 }

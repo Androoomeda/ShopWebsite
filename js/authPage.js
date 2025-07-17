@@ -1,5 +1,5 @@
 import * as logger from './logger.js';
-import {loginUser, registerUser} from './api.js';
+import { loginUser } from './api.js';
 
 const emailInput = document.getElementById('email');
 const emailError = document.getElementById('emailError');
@@ -36,29 +36,26 @@ authBtn.addEventListener('click', async (event) => {
     password: passwordInput.value.trim()
   }
 
-  try {
-    const response = await loginUser(data);
+  const response = await loginUser(data);
+  emailError.textContent = '';
+  passwordError.textContent = '';
 
-    if (response.ok) {
-      window.location.href = 'mainPage.html';
-    }
-    else {
-      const error = await response.json();
+  if (response.success) {
+    window.location.href = 'mainPage.html';
+  }
+  else {
+    const error = response.error;
 
-      if (error.field === 'email') {
-        emailError.textContent = error.message;
-        emailError.style.display = 'block';
-      }
-      else if (error.field === 'password') {
-        passwordError.textContent = error.message;
-        passwordError.style.display = 'block';
-      } else {
-        logger.consoleLog('Ошибка входа: ' + (error.message || response.statusText));
-        alert('Ошибка входа: ' + (error.message || response.statusText));
-      }
+    if (error.field === 'email') {
+      emailError.textContent = error.message;
+      emailError.style.display = 'block';
     }
-  } catch (error) {
-    logger.consoleLog('Ошибка при отправке запроса: ' + (error.message || response.statusText));
+    else if (error.field === 'password') {
+      passwordError.textContent = error.message;
+      passwordError.style.display = 'block';
+    } else {
+      logger.consoleLog('Ошибка входа: ' + error);
+    }
   }
 });
 

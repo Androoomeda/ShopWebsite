@@ -83,30 +83,28 @@ registerBtn.addEventListener('click', async (event) => {
     password: passwordInput.value.trim()
   }
 
-  try {
-    const response = registerUser(data);
-    
-    if (response.ok) {
-      window.location.href = 'auth.html';
-      logger.consoleLog('Регистрация прошла успешно');
-    }
-    else {
-      const error = await response.json();
+  const response = await registerUser(data);
+  usernameError.textContent = '';
+  emailError.textContent = '';
 
-      if (error.field === 'username') {
-        usernameError.textContent = error.message;
-        usernameError.style.display = 'block';
-      }
-      else if (error.field === 'email') {
-        emailError.textContent = error.message;
-        emailError.style.display = 'block';
-      } else {
-        logger.consoleLog('Ошибка регистрации: ' + (error.message || response.statusText));
-        alert('Ошибка регистрации: ' + (error.message || response.statusText));
-      }
+  if (response.success) {
+    window.location.href = 'auth.html';
+    logger.consoleLog('Регистрация прошла успешно');
+  }
+  else {
+    const error = response.error;
+
+    if (error.field === 'username') {
+      usernameError.textContent = error.message;
+      usernameError.style.display = 'block';
     }
-  } catch (error) {
-    logger.consoleLog('Ошибка при отправке запроса: ' + (error.message || response.statusText));
+    else if (error.field === 'email') {
+      emailError.textContent = error.message;
+      emailError.style.display = 'block';
+    } else {
+      logger.consoleLog('Ошибка регистрации: ' + (error || response.statusText));
+      alert('Ошибка регистрации: ' + (error || response.statusText));
+    }
   }
 });
 

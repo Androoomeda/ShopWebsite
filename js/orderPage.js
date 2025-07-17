@@ -10,14 +10,15 @@ const totalDiscount = document.getElementById('total-discount');
 const totalPrice = document.getElementById('total-price');
 
 loadProducts();
-loadUserInfoCounters();
 
 async function loadProducts() {
-  try {
-    const data = await api.getCartItems();
-    renderCartItems(data);
-  } catch (error) {
-    logger.handleError(error, cartItemsContainer);
+  const response = await api.getCartItems();
+  loadUserInfoCounters();
+
+  if (response.success)
+    renderCartItems(response.data);
+  else {
+    logger.handleError(response.error, cartItemsContainer);
   }
 }
 
@@ -65,14 +66,8 @@ function createCartItem(cartItem) {
   trashImg.alt = 'Удалить';
 
   trashImg.addEventListener('click', () => {
-    showDeleteConfirmation(() => {
-      api.removeCartItem(cartItem.product.id)
-        .then(() => {
-          loadProducts();
-        })
-        .catch(error => {
-          logger.handleError(error, cartItemsContainer);
-        });
+    showDeleteConfirmation(async () => {
+      removeCartItem(cartItem.product.id);
     });
   });
 
@@ -85,26 +80,13 @@ function createCartItem(cartItem) {
   btnMinus.title = 'Уменьшить количество';
   btnMinus.textContent = '-';
 
-  btnMinus.addEventListener('click', () => {
+  btnMinus.addEventListener('click', async () => {
     if (quantity > 1) {
-
-      api.editCartItem(cartItem.id, quantity - 1)
-        .then(() => {
-          loadProducts();
-        })
-        .catch(error => {
-          logger.handleError(error, cartItemsContainer);
-        });
+      editCartItem(cartItem.id, quantity - 1);
     }
     else {
-      showDeleteConfirmation(() => {
-        api.removeCartItem(cartItem.product.id)
-          .then(() => {
-            loadProducts();
-          })
-          .catch(error => {
-            logger.handleError(error, cartItemsContainer);
-          });
+      showDeleteConfirmation(async () => {
+        removeCartItem(cartItem.product.id);
       });
     }
   });
@@ -114,16 +96,8 @@ function createCartItem(cartItem) {
   btnPlus.title = 'Увеличить количество';
   btnPlus.textContent = '+';
 
-  btnPlus.addEventListener('click', () => {
-    quantity++;
-
-    api.editCartItem(cartItem.id, quantity)
-      .then(() => {
-        loadProducts();
-      })
-      .catch(error => {
-        logger.handleError(error, cartItemsContainer);
-      });
+  btnPlus.addEventListener('click', async () => {
+    editCartItem(cartItem.id, quantity + 1);
   });
 
   qtyDiv.appendChild(trashImg);
@@ -203,6 +177,24 @@ function showDeleteConfirmation(onDelete) {
   closeBtn.addEventListener('click', () => {
     document.body.removeChild(overlay);
   });
+}
+
+async function editCartItem(cartItemId, quantity){
+  const response = await api.editCartItem(cartItemId, quantity)
+
+    if (response.success)
+      loadProducts();
+    else
+      logger.handleError(response.error, cartItemsContainer);
+}
+
+async function removeCartItem(productId) {
+  const response = await api.removeCartItem(productId);
+
+  if (response.success)
+    loadProducts();
+  else
+    logger.handleError(response.error, cartItemsContainer);
 }
 
 function updateTotals(data) {

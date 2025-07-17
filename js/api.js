@@ -1,117 +1,27 @@
-export async function getUserInfo() {
-  const response = await fetch('http://localhost:5120/api/shopuser', {
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    credentials: 'include'
-  });
+const baseUrl = 'http://localhost:5120';
 
-  if (!response.ok) {
-    const error = new Error('Ошибка загрузки информации пользователя');
-    error.status = response.status; 
-    throw error;
-  }
+export const getProducts = () => apiRequest('/api/products');
 
-  return response.json();
-}
+export const getCategoryProducts = categoryName =>
+  apiRequest(`/api/categories/${categoryName}`);
 
-export async function getProducts() {
-  const response = await fetch('http://localhost:5120/api/products')
+export const getProductById = productId =>
+  apiRequest(`/api/products/${productId}`, { credentials: 'include' });
 
-  if (!response.ok) throw new Error(`Ошибка загрузки продуктов: 
-    ${response.statusText}`);
+export const getFavoriteIds = () =>
+  apiRequest(`/api/favorite/get-ids`, { credentials: 'include' });
 
-  return response.json();
-}
+export const getFavoriteProducts = () =>
+  apiRequest(`/api/favorite`, { credentials: 'include', redirectOn401: true });
 
-export async function getCategoryProducts(categoryName) {
-  const response = await fetch(`http://localhost:5120/api/categories/${categoryName}`)
+export const addToFavorite = productId =>
+  apiRequest(`/api/favorite/${productId}`, { method: 'POST', credentials: 'include', redirectOn401: true });
 
-  if (!response.ok) throw new Error(`Ошибка загрузки продуктов: 
-    ${response.statusText}`);
+export const removeFavorite = productId =>
+  apiRequest(`/api/favorite/${productId}`, { method: 'DELETE', credentials: 'include', redirectOn401: true });
 
-  return response.json();
-}
-
-export async function getProductById(productId) {
-  const response = await fetch(`http://localhost:5120/api/products/${productId}`, {
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    credentials: 'include'
-  });
-
-  if (!response.ok) throw new Error(`Ошибка загрузки продукта c id=${productId}: 
-    ${response.statusText}`);
-
-  return response.json();
-}
-
-export async function getFavoriteIds() {
-  const response = await fetch(`http://localhost:5120/api/favorite/get-ids`,
-    {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      credentials: 'include'
-    });
-
-  if (!response.ok) throw new Error(`Ошибка загрузки избранных продуктов: 
-    ${response.statusText}`);
-
-  return response.json();
-}
-
-export async function getFavoriteProducts() {
-  const response = await fetch(`http://localhost:5120/api/favorite`,
-    {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      credentials: 'include'
-    });
-
-  return handleApiResponse(response);
-}
-
-
-export async function addToFavorite(productId) {
-  const response = await fetch(`http://localhost:5120/api/favorite/${productId}`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      credentials: 'include'
-    });
-
-  return handleApiResponse(response);
-}
-
-export async function removeFavorite(productId) {
-  const response = await fetch(`http://localhost:5120/api/favorite/${productId}`,
-    {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      credentials: 'include'
-    });
-
-  return handleApiResponse(response);
-}
-
-export async function getCartItems() {
-  const response = await fetch(`http://localhost:5120/api/cartitem`,
-    {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      credentials: 'include'
-    });
-
-  return handleApiResponse(response);
-}
+export const getCartItems = () =>
+  apiRequest(`/api/cartitem`, { credentials: 'include', redirectOn401: true });
 
 export async function addToCart(productId, sizeId) {
   const data = {
@@ -119,99 +29,73 @@ export async function addToCart(productId, sizeId) {
     sizeId: sizeId
   };
 
-  const response = await fetch(`http://localhost:5120/api/cartitem/addtocart`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    credentials: 'include',
-    body: JSON.stringify(data)
-  });
-
-  return handleApiResponse(response);
+  return await apiRequest(`/api/cartitem/addtocart`,
+    { method: 'POST', credentials: 'include', body: data, redirectOn401: true });
 }
 
 export async function editCartItem(productId, quantity) {
   const data = { quantity: quantity };
 
-  const response = await fetch(`http://localhost:5120/api/cartitem/${productId}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    credentials: 'include',
-    body: JSON.stringify(data)
-  });
-
-  return handleApiResponse(response);
+  return await apiRequest(`/api/cartitem/${productId}`,
+    { method: 'PUT', credentials: 'include', body: data, redirectOn401: true });
 }
 
-export async function removeCartItem(productId) {
-  const response = await fetch(`http://localhost:5120/api/cartitem/${productId}`,
-    {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      credentials: 'include'
-    });
+export const removeCartItem = productId =>
+  apiRequest(`/api/cartitem/${productId}`,
+    { method: 'DELETE', credentials: 'include', redirectOn401: true });
 
-  return handleApiResponse(response);
+export const logoutUser = () =>
+  apiRequest(`/api/shopuser/logout`,
+    { method: 'POST', credentials: 'include' });
+
+export const loginUser = data =>
+  apiRequest('/api/ShopUser/login',
+    { method: 'POST', credentials: 'include', body: data });
+
+export const registerUser = data =>
+  apiRequest('/api/ShopUser/register',
+    { method: 'POST', credentials: 'include', body: data });
+
+export const getUserInfo = () =>
+  apiRequest('/api/shopuser', { credentials: 'include' });
+
+async function apiRequest(path, { method = 'GET', body, credentials, redirectOn401 = false } = {}) {
+  const url = baseUrl + path;
+
+  const fetchOptions = {
+    method,
+    headers: { 'Content-Type': 'application/json' },
+    credentials
+  };
+
+  if (body)
+    fetchOptions.body = JSON.stringify(body);
+
+  const response = await fetch(url, fetchOptions);
+  return handleApiResponse(response, { redirectOn401 });
 }
 
-export async function logoutUser(){
-  const response = await fetch(`http://localhost:5120/api/shopuser/logout`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      credentials: 'include'
-    });
+async function handleApiResponse(response, { redirectOn401 = false } = {}) {
+  const contentType = response.headers.get('Content-Type');
+  let json = null;
 
-  return response;
-}
+  if (contentType && contentType.includes('application/json')) {
+    try {
+      json = await response.json();
+    } catch { }
+  }
 
-export async function loginUser(data){
-  const response = await fetch('http://localhost:5120/api/ShopUser/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data),
-      credentials: 'include'
-    });
-  
-    return response;
-}
-
-export async function registerUser(data){
-  const response = await fetch('http://localhost:5120/api/ShopUser/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    });
-
-  return response;
-}
-
-async function handleApiResponse(response) {
   if (response.status === 401) {
-    window.location.href = 'auth.html';
-    return Promise.reject(new Error('Unauthorized'));
+    if (redirectOn401) {
+      window.location.href = 'auth.html';
+    }
+
+    return { success: false, status: 401, unauthorized: true, error: json };
   }
 
   if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`Ошибка: ${response.status} ${errorText}`);
+    return { success: false, status: response.status, error: json ?? await response.text() };
   }
 
-  const contentType = response.headers.get('Content-Type');
-  if (contentType && contentType.includes('application/json')) {
-    return response.json();
-  } else {
-    return null;
-  }
+  return { success: true, data: json };
 }
