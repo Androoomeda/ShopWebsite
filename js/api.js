@@ -29,7 +29,7 @@ export async function addToCart(productId, sizeId) {
     sizeId: sizeId
   };
 
-  return await apiRequest(`/api/cartitem/addtocart`,
+  return await apiRequest(`/api/cartitem`,
     { method: 'POST', credentials: 'include', body: data, redirectOn401: true });
 }
 
