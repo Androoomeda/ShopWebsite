@@ -40,8 +40,8 @@ export const getProductById = productId =>
 - Форма авторизации пользователя;
 - Форма регистрации если пользователь ещё не зарегистрирован, проверка всех полей на соответствие шаблону
 <div align="center">
-  <img src="sources/readme/authPage.png" width="500px">
-  <img src="sources/readme/registerPage.png" width="500px">
+  <img src="sources/readme/authPage.png" width="400px" height="400px">
+  <img src="sources/readme/registerPage.png" width="400px" height="400px">
 </div>
 
 ### Страница профиля - profile.html
